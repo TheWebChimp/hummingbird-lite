@@ -1,0 +1,42 @@
+/**
+ * main.css
+ */
+body {
+
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 14px;
+}
+
+div { position:relative }
+
+br.clear {
+	clear: both;
+	display: block;
+	height: 1px;
+	margin: -1px 0 0 0;
+}
+
+a {
+	color: #0088CC;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #005588;
+	text-decoration: underline;
+}
+
+.container {
+
+	width: 940px;
+	margin: 0 auto;
+}
+
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+
+.pull-left { float: left; }
+.pull-right { float: right; }
+
+.hide { display: none; }
