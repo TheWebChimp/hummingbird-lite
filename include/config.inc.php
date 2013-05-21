@@ -6,7 +6,7 @@
 	$settings = array(
 		'development' => array(
 			# Global settings
-			'site_url' => 'http://localhost/webchimp/GitHub/hummingbird/',
+			'site_url' => 'http://localhost/webchimp/GitHub/hummingbird-lite/',
 			# Database settings
 			'db_driver' => 'none', 		# none, sqlite or mysql
 			'db_host' => 'localhost',

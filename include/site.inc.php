@@ -3,7 +3,7 @@
 	 * Site class
 	 */
 	class Site {
-		protected $base_url;
+		public $base_url;
 		protected $base_dir;
 		protected $routes;
 		protected $actions;
@@ -17,6 +17,8 @@
 		protected $page_title;
 		protected $pass_salt;
 		protected $token_salt;
+		protected $hooks;
+		protected $filters;
 		protected $dbh;
 
 		/**
@@ -37,6 +39,7 @@
 			$this->slugs = array();
 			$this->params = array();
 			$this->pages = array();
+			$this->hooks = array();
 			$this->plugins = $opts['plugins'];
 			# Initialize variables
 			$this->pass_salt = $settings['shared']['pass_salt'];
@@ -143,11 +146,17 @@
 		 * @return string        The well-formed URL
 		 */
 		function baseUrl($path = '', $echo = false) {
-			$base_url = $this->base_url;
+			$base_url = rtrim($this->base_url, '/');
 			if ( isset($_SERVER['HTTPS']) ) {
 				$base_url = str_replace('http://', 'https://', $base_url);
 			}
 			$ret = sprintf('%s%s', $base_url, $path);
+			#
+			$trans = $this->executeHook('baseUrl', $path);
+			if ($trans) {
+				$ret = $trans;
+			}
+			#
 			if ($echo) {
 				echo $ret;
 			}
@@ -488,6 +497,41 @@
 				echo $ret;
 			}
 			return $ret;
+		}
+
+		/**
+		 * Register a hook listener
+		 * @param  string  $hook      Hook name
+		 * @param  string  $functName Callback function name
+		 * @param  boolean $prepend   Whether to add the listener at the beginning or the end
+		 */
+		function registerHook($hook, $functName, $prepend = false) {
+			if (! isset( $this->hooks[$hook] ) ) {
+				$this->hooks[$hook] = array();
+			}
+			if ($prepend) {
+				array_unshift($this->hooks[$hook], $functName);
+			} else {
+				array_push($this->hooks[$hook], $functName);
+			}
+		}
+
+		/**
+		 * Execute a hook (run each listener incrementally)
+		 * @param  string $hook   	Hook name
+		 * @param  mixed  $params 	Parameter to pass to each callback function
+		 * @return mixed          	The processed data or the same data if no callbacks were found
+		 */
+		function executeHook($hook, $param = '') {
+			if ( isset( $this->hooks[$hook] ) ) {
+				$hooks = $this->hooks[$hook];
+				$ret = true;
+				foreach ($hooks as $hook) {
+					$ret = call_user_func($hook, $param);
+				}
+				return $ret;
+			}
+			return false;
 		}
 	}
 ?>
