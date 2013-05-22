@@ -107,6 +107,7 @@
 				$site->addBodyClass($slug . '-page');
 			}
 			# Include the file
+			extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
 			include $page;
 			return true;
 		}
@@ -258,6 +259,7 @@
 				if (file_exists($part)) {
 					global $site;
 					# Include the file
+					extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
 					include $part;
 					echo "\n";
 				}
