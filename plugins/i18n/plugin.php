@@ -37,7 +37,7 @@
 		/**
 		 * Listener for the baseUrl hook
 		 * @param  string  $path   Path
-		 * @param  boolean $echo   Print the result?
+		 * @param  boolean $echo   Whether to print the result or not
 		 * @param  string  $locale Override current locale
 		 * @return string          Localized url (if there are any locales)
 		 */
@@ -67,7 +67,7 @@
 		/**
 		 * Get localized link
 		 * @param  string  $path   Path
-		 * @param  boolean $echo   Print the result?
+		 * @param  boolean $echo   Whether to print the result or not
 		 * @param  string  $locale Override current locale
 		 * @return string          Localized link to the given path
 		 */
@@ -111,6 +111,14 @@
 		}
 
 		/**
+		 * Get the list of registered locales
+		 * @return array 				List of registered locales
+		 */
+		function getLocales() {
+			return $this->locales;
+		}
+
+		/**
 		 * Get specified translation
 		 * @param  string $key Translation key
 		 * @return string      The specified translation or the key if it wasn't found
@@ -130,9 +138,41 @@
 	# Instantiate the plugin object
 	$i18n = new I18N();
 
-	# Register a global shorthand function
+	# Register global functions
+
+	/**
+	 * Get a translated string and optionally print it
+	 * @param  string  $key  Translation key
+	 * @param  boolean $echo Whether to print the result or not
+	 * @return string        The translated string of its name if it wasn't found
+	 */
 	function _t($key, $echo = true) {
 		global $i18n;
 		return $i18n->getTranslation($key, $echo);
+	}
+
+	/**
+	 * Get a translated selection box and optionally print it
+	 * @param  string  $key   Translation key
+	 * @param  boolean $echo  Whether to print the result or not
+	 * @param  string  $sel   The value of the selected item
+	 * @param  array   $attrs Any extra attribute to add to the select tag
+	 * @return string         Translated select tag markup
+	 */
+	function _select($key, $echo = true, $sel = '', $attrs = array()) {
+		$options = _t($key, false);
+		$attr_text = '';
+		foreach ($attrs as $attr => $value) {
+			$attr_text .= sprintf(' %s="%s"', $attr, $value);
+		}
+		$ret = sprintf('<select%s>', $attr_text);
+		foreach ($options as $option => $name) {
+			$ret .= '<option '.($option == $sel ? 'selected="selected"' : '').'value="'.$option.'">'.$name.'</option>';
+		}
+		$ret .= '</select>';
+		if ($echo) {
+			echo $ret;
+		}
+		return $ret;
 	}
 ?>
