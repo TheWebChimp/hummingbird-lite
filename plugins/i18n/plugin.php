@@ -8,71 +8,35 @@
 		 */
 		function __construct() {
 			global $site;
-			#
+			# Initialize variables
 			$this->locales = array();
 			$locale = '';
-			#
-			$site->routeAdd('/:lang/:page', 'I18N::getPage', true);
-			$site->registerHook('baseUrl', 'I18N::localizeUrl');
+			# Register router
+			$site->addRoute('/:lang/*params', 'I18N::getPage', true);
 		}
 
 		/**
-		 * Get the specified, localized page
-		 * @param  mixed $params         String slug or array with parameters
-		 * @param  string $templates_dir Templates folder
-		 * @return boolean               TRUE if the page was found, FALSE otherwise
+		 * Handle a (possibly) localized route
+		 * @param  mixed $params          Route or array
+		 * @param  string $templates_dir  Templates dir
+		 * @return boolean                TRUE if routing was successful, FALSE otherwise
 		 */
 		static function getPage($params, $templates_dir = '') {
-			global $i18n;
-			$locale = $params[1];
-			if ( is_array($params) ) {
-				$params = array_pop($params);
-			}
-			if ( isset($i18n->locales[ $locale ] ) ) {
-				$i18n->setLocale($locale);
-			}
-			return Site::getPage($params, $templates_dir);
-		}
-
-		/**
-		 * Listener for the baseUrl hook
-		 * @param  string  $path   Path
-		 * @param  boolean $echo   Whether to print the result or not
-		 * @param  string  $locale Override current locale
-		 * @return string          Localized url (if there are any locales)
-		 */
-		static function localizeUrl($path, $echo = false, $locale = '') {
 			global $site;
 			global $i18n;
-			if ( empty($locale) ) {
-				$locale = $i18n->locale;
+			# We must check whether this is a localized route or not
+			$lang = $params[1];
+			if ( array_key_exists( $lang, $i18n->getLocales() ) ) {
+				# A registered locale, strip the locale identifier and rebuild the route
+				$page = '';
+				for ($i = 2; $i < count($params); $i++) {
+					$page .= sprintf('/%s', $params[$i]);
+				}
+				# Call the base router again with the new route
+				$site->matchRoute($page);
+				return true;
 			}
-			#
-			$base_url = rtrim($site->base_url, '/');
-			if ( isset($_SERVER['HTTPS']) ) {
-				$base_url = str_replace('http://', 'https://', $base_url);
-			}
-			if ( $i18n->locale ) {
-				$ret = sprintf('%s/%s%s', $base_url, $locale, $path);
-			} else {
-				$ret = sprintf('%s%s', $base_url, $path);
-			}
-			#
-			if ($echo) {
-				echo $ret;
-			}
-			return $ret;
-		}
-
-		/**
-		 * Get localized link
-		 * @param  string  $path   Path
-		 * @param  boolean $echo   Whether to print the result or not
-		 * @param  string  $locale Override current locale
-		 * @return string          Localized link to the given path
-		 */
-		function localizeBaseUrl($path, $echo = false, $locale = '') {
-			return self::localizeUrl($path, $echo, $locale);
+			return false;
 		}
 
 		/**
@@ -107,7 +71,8 @@
 		 * @return string  				The current locale identifier
 		 */
 		function getLocale() {
-			return $this->locale;
+			$ret = $this->locale;
+			return $ret;
 		}
 
 		/**
@@ -119,11 +84,30 @@
 		}
 
 		/**
+		 * Get a localized URL
+		 * @param  string  $path   		URL path
+		 * @param  boolean $echo   		Whether to print the result or not
+		 * @param  string  $locale 		Locale identifier to override the current locale
+		 * @return string          		The well-formed URL
+		 */
+		function urlTo($path, $echo = false, $locale = '') {
+			global $site;
+			if ( empty($locale) ) {
+				$locale = $this->getLocale();
+			}
+			$ret = $site->baseUrl( sprintf('/%s%s', $locale, $path) );
+			if ($echo) {
+				echo $ret;
+			}
+			return $ret;
+		}
+
+		/**
 		 * Get specified translation
 		 * @param  string $key Translation key
-		 * @return string      The specified translation or the key if it wasn't found
+		 * @return string      			The specified translation or the key if it wasn't found
 		 */
-		function getTranslation($key, $echo = true) {
+		function translate($key, $echo = true) {
 			$ret = $key;
 			if (! empty($this->locale) && isset( $this->locales[$this->locale][$key] ) ) {
 				$ret = $this->locales[$this->locale][$key];
@@ -133,46 +117,33 @@
 			}
 			return $ret;
 		}
+
+		/**
+		 * Get a translated selection box and optionally print it
+		 * @param  string  $key   		Translation key
+		 * @param  boolean $echo  		Whether to print the result or not
+		 * @param  string  $sel   		The value of the selected item
+		 * @param  array   $attrs 		Any extra attribute to add to the select tag
+		 * @return string         		Translated select tag markup
+		 */
+		function select($key, $echo = true, $sel = '', $attrs = array()) {
+			$options = $this->translate($key, false);
+			$attr_text = '';
+			foreach ($attrs as $attr => $value) {
+				$attr_text .= sprintf(' %s="%s"', $attr, $value);
+			}
+			$ret = sprintf('<select%s>', $attr_text);
+			foreach ($options as $option => $name) {
+				$ret .= '<option '.($option == $sel ? 'selected="selected"' : '').'value="'.$option.'">'.$name.'</option>';
+			}
+			$ret .= '</select>';
+			if ($echo) {
+				echo $ret;
+			}
+			return $ret;
+		}
 	}
 
 	# Instantiate the plugin object
 	$i18n = new I18N();
-
-	# Register global functions
-
-	/**
-	 * Get a translated string and optionally print it
-	 * @param  string  $key  Translation key
-	 * @param  boolean $echo Whether to print the result or not
-	 * @return string        The translated string of its name if it wasn't found
-	 */
-	function _t($key, $echo = true) {
-		global $i18n;
-		return $i18n->getTranslation($key, $echo);
-	}
-
-	/**
-	 * Get a translated selection box and optionally print it
-	 * @param  string  $key   Translation key
-	 * @param  boolean $echo  Whether to print the result or not
-	 * @param  string  $sel   The value of the selected item
-	 * @param  array   $attrs Any extra attribute to add to the select tag
-	 * @return string         Translated select tag markup
-	 */
-	function _select($key, $echo = true, $sel = '', $attrs = array()) {
-		$options = _t($key, false);
-		$attr_text = '';
-		foreach ($attrs as $attr => $value) {
-			$attr_text .= sprintf(' %s="%s"', $attr, $value);
-		}
-		$ret = sprintf('<select%s>', $attr_text);
-		foreach ($options as $option => $name) {
-			$ret .= '<option '.($option == $sel ? 'selected="selected"' : '').'value="'.$option.'">'.$name.'</option>';
-		}
-		$ret .= '</select>';
-		if ($echo) {
-			echo $ret;
-		}
-		return $ret;
-	}
 ?>

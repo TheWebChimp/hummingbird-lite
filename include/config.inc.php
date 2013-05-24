@@ -16,7 +16,8 @@
 			'db_file' => ABSPATH . '/include/schema.sqlite',
 			# Plugins
 			'plugins' => array(
-				'i18n'
+				'i18n',
+				'gatekeeper'
 			)
 		),
 		'production' => array(
@@ -31,7 +32,8 @@
 			'db_file' => ABSPATH . '/include/schema.sqlite',
 			# Plugins
 			'plugins' => array(
-				'i18n'
+				'i18n',
+				'gatekeeper'
 			)
 		),
 		'shared' => array(

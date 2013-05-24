@@ -3,7 +3,7 @@
 	 * Site class
 	 */
 	class Site {
-		public $base_url;
+		protected $base_url;
 		protected $base_dir;
 		protected $routes;
 		protected $actions;
@@ -19,6 +19,7 @@
 		protected $token_salt;
 		protected $hooks;
 		protected $filters;
+		protected $profile;
 		protected $dbh;
 
 		/**
@@ -26,9 +27,9 @@
 		 */
 		function __construct($settings) {
 			# Load settings
-			$opts = $settings[PROFILE];
+			$this->profile = $settings[PROFILE];
 			$this->base_dir = ABSPATH;
-			$this->base_url = $opts['site_url'];
+			$this->base_url = $this->profile['site_url'];
 			# Create arrays
 			$this->routes = array();
 			$this->actions = array();
@@ -40,17 +41,12 @@
 			$this->params = array();
 			$this->pages = array();
 			$this->hooks = array();
-			$this->plugins = $opts['plugins'];
+			$this->plugins = $this->profile['plugins'];
 			# Initialize variables
 			$this->pass_salt = $settings['shared']['pass_salt'];
 			$this->token_salt = $settings['shared']['token_salt'];
 			$this->site_title = $settings['shared']['site_name'];
 			$this->page_title = $this->site_title;
-			# Add routes
-			$this->routeAdd('/:page', 'Site::getPage');
-			$this->routeAdd('/ajax', 'Site::ajaxRequest', true);
-			# Add pages
-			$this->pageAdd('home', 'home-page');
 			# Register base scripts
 			$this->registerScript('jquery', $this->baseUrl('/js/jquery-1.9.1.min.js') );
 			$this->registerScript('jquery.form', $this->baseUrl('/js/jquery.form.js') );
@@ -59,14 +55,14 @@
 			$this->registerScript('backbone', $this->baseUrl('/js/backbone.js') );
 			# Create database connection
 			try {
-				switch ( $opts['db_driver'] ) {
+				switch ( $this->profile['db_driver'] ) {
 					case 'sqlite':
-						$dsn = sprintf('sqlite:%s', $opts['db_file']);
+						$dsn = sprintf('sqlite:%s', $this->profile['db_file']);
 						$this->dbh = new PDO($dsn);
 						break;
 					case 'mysql':
-						$dsn = sprintf('mysql:host=%s;dbname=%s', $opts['db_host'], $opts['db_name']);
-						$this->dbh = new PDO($dsn, $opts['db_user'], $opts['db_pass']);
+						$dsn = sprintf('mysql:host=%s;dbname=%s', $this->profile['db_host'], $this->profile['db_name']);
+						$this->dbh = new PDO($dsn, $this->profile['db_user'], $this->profile['db_pass']);
 						break;
 				}
 				# Change error and fetch mode
@@ -152,12 +148,7 @@
 				$base_url = str_replace('http://', 'https://', $base_url);
 			}
 			$ret = sprintf('%s%s', $base_url, $path);
-			#
-			$trans = $this->executeHook('baseUrl', $path);
-			if ($trans) {
-				$ret = $trans;
-			}
-			#
+			# Print and/or return the result
 			if ($echo) {
 				echo $ret;
 			}
@@ -170,7 +161,7 @@
 		 * @param  string  $functName Handler function name
 		 * @param  boolean $insert    If set, the route will be inserted at the beginning
 		 */
-		function routeAdd($route, $functName, $insert = false) {
+		function addRoute($route, $functName, $insert = false) {
 			if ($insert) {
 				$this->routes = array_reverse($this->routes, true);
 			    $this->routes[$route] = $functName;
@@ -217,10 +208,26 @@
 			$cur_route = '/' . $cur_route;
 			$cur_route = rtrim($cur_route, '/');
 
+			# Make sure we have a valid route
 			if ( empty($cur_route) ) {
 				$cur_route = '/home';
 			}
 
+			if (! $this->matchRoute($cur_route) ) {
+				# Nothing was found, show a 404 page
+				Site::getPage('404');
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		/**
+		 * Try to match the given route with one of the registered handlers and process it
+		 * @param  string $route  		The route to match
+		 * @return boolean        		TRUE if the route matched with a handler, FALSE otherwise
+		 */
+		function matchRoute($spec_route) {
 			# And try to match the route with the registered ones
 			$matches = array();
 			foreach ($this->routes as $route => $handler) {
@@ -230,12 +237,24 @@
 				$c = preg_replace('/(\(\?)?:\w+/', '([^\/]+)', $b);             // namedParam
 				$d = preg_replace('/\*\w+/', '(.*?)', $c);                      // splatParam
 				$pattern = "~^{$d}$~";
-				if ( preg_match($pattern, $cur_route, $matches) == 1) {
-					# We've got a winner, render the page and exit the loop
-					call_user_func($handler, $matches);
-					break;
+				if ( preg_match($pattern, $spec_route, $matches) == 1) {
+					# We've got a match, try to route with this handler
+					$ret = call_user_func($handler, $matches);
+					if ($ret) {
+						# Exit the loop only if the handler did its job
+						return true;
+					}
 				}
 			}
+			return false;
+		}
+
+		/**
+		 * Get the registered routes
+		 * @return array The registered routes
+		 */
+		function getRoutes() {
+			return $this->routes;
 		}
 
 		/**
@@ -292,7 +311,7 @@
 		 * @param  string $slug     Page slug
 		 * @param  string $template Page template name (without extension)
 		 */
-		function pageAdd($slug, $template = '') {
+		function addPage($slug, $template = '') {
 			if ( empty($template) ) {
 				$template = $slug;
 			}
@@ -328,7 +347,7 @@
 		 */
 		function redirectTo($route) {
 			if ( preg_match('/^(http:\/\/|https:\/\/).*/', $route) !== 1 ) {
-				$url = sprintf('%s/%s', rtrim($this->base_url, '/'), ltrim($route, '/'));
+				$url = $this->baseUrl($route);
 			} else {
 				$url = $route;
 			}
@@ -344,7 +363,7 @@
 		 * @return string         The resulting url
 		 */
 		function urlTo($route, $echo = false) {
-			$url = sprintf('%s/%s', rtrim($this->base_url, '/'), ltrim($route, '/'));
+			$url = $this->baseUrl($route);
 			if ($echo) {
 				echo $url;
 			}
@@ -534,6 +553,28 @@
 				return $ret;
 			}
 			return false;
+		}
+
+		/**
+		 * Get the specified option from the current profile
+		 * @param  string $key     Option name
+		 * @param  string $default Default value
+		 * @return mixed           The option value (array, string, integer, boolean, etc)
+		 */
+		function getOption($key, $default = '') {
+			$ret = $default;
+			if ( isset( $this->profile[$key] ) ) {
+				$ret = $this->profile[$key];
+			}
+			return $ret;
+		}
+
+		/**
+		 * Return the current database connection object
+		 * @return object 			PDO instance for the current connection
+		 */
+		function getDatabase() {
+			return $this->dbh;
 		}
 	}
 ?>
