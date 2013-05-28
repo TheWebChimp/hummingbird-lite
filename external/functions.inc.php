@@ -11,13 +11,6 @@
 	# Include scripts
 	$site->enqueueScript('jquery');
 
-	# Add routes
-	$site->addRoute('/ajax', 'Site::ajaxRequest');
-	$site->addRoute('/:page', 'Site::getPage');
-
-	# Add pages
-	$site->addPage('home', 'home-page');
-
 	# Sample AJAX action
 	function ajax_test() {
 		echo '<pre>'.print_r($_REQUEST, true).'</pre>';
@@ -27,5 +20,6 @@
 
 	# Localization
 	$i18n->addLocale('en', ABSPATH . '/plugins/i18n/lang/enUS.php');
+	$i18n->addLocale('es', ABSPATH . '/plugins/i18n/lang/esMX.php');
 	$i18n->setLocale('en');
 ?>

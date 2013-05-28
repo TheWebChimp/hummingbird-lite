@@ -7,7 +7,6 @@
 
 	# Define the absolute path
 	define( 'ABSPATH', dirname(__FILE__) );
-	define( 'PROFILE', 'development' );
 
 	# Include required files
 	include ABSPATH . '/include/config.inc.php';

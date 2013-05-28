@@ -1,4 +1,13 @@
 <?php
+	/**
+	 * I18N plugin
+	 * Provides basic internationalization services to Hummingbird.
+	 * Version: 	1.0
+	 * Author(s):	biohzrdmx <github.com/biohzrdmx>
+	 * ToDo:		Maybe improve routing
+	 * 				More helpers
+	 */
+
 	class I18N {
 		protected $locales;
 		protected $locale;
@@ -32,6 +41,8 @@
 				for ($i = 2; $i < count($params); $i++) {
 					$page .= sprintf('/%s', $params[$i]);
 				}
+				# Override the current locale
+				$i18n->setLocale($lang);
 				# Call the base router again with the new route
 				$site->matchRoute($page);
 				return true;

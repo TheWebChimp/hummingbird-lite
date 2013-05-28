@@ -1,7 +1,16 @@
 <?php
 	/**
-	 * Site class
+	 * Hummingbird Lite
+	 * This class is the core of Hummingbird, so please try to keep it
+	 * backwards-compatible if you modify it.
+	 * Version: 	2.0
+	 * Author(s):	biohzrdmx <github.com/biohzrdmx>
+	 * ToDo:		Improve hook engine
+	 * 				Improve tokens (make them more nonce-like)
+	 * 				Improve routing (per-route priority would be great)
+	 * 				Include more scripts (jquery-ui, jquery.validator2, jquery.loader2, etc)
 	 */
+
 	class Site {
 		protected $base_url;
 		protected $base_dir;
@@ -42,17 +51,26 @@
 			$this->pages = array();
 			$this->hooks = array();
 			$this->plugins = $this->profile['plugins'];
+			# Add routes
+			$this->addRoute('/ajax', 'Site::ajaxRequest');
+			$this->addRoute('/:page', 'Site::getPage');
+			# Add pages
+			$this->addPage('home', 'home-page');
 			# Initialize variables
 			$this->pass_salt = $settings['shared']['pass_salt'];
 			$this->token_salt = $settings['shared']['token_salt'];
 			$this->site_title = $settings['shared']['site_name'];
 			$this->page_title = $this->site_title;
+			# Register base styles
+			$this->registerStyle('bootstrap', $this->baseUrl('/css/bootstrap.min.css') );
+			$this->registerStyle('bootstrap-responsive', $this->baseUrl('/css/bootstrap-responsive.min.css') );
 			# Register base scripts
 			$this->registerScript('jquery', $this->baseUrl('/js/jquery-1.9.1.min.js') );
 			$this->registerScript('jquery.form', $this->baseUrl('/js/jquery.form.js') );
 			$this->registerScript('jquery.cycle', $this->baseUrl('/js/jquery.cycle.all.js') );
 			$this->registerScript('underscore', $this->baseUrl('/js/underscore.js') );
 			$this->registerScript('backbone', $this->baseUrl('/js/backbone.js') );
+			$this->registerScript('bootstrap', $this->baseUrl('/js/bootstrap.min.js') );
 			# Create database connection
 			try {
 				switch ( $this->profile['db_driver'] ) {
@@ -81,7 +99,7 @@
 		 * @param  string $templates_dir Override default template dir
 		 * @return boolean               TRUE if the page was found, FALSE otherwise
 		 */
-		static function getPage($params, $templates_dir = '') {
+		static function getPage($params, $templates_dir = '', $whitelist = true) {
 			global $site;
 			if ( empty($templates_dir) ) {
 				$templates_dir = $site->base_dir;
@@ -91,9 +109,9 @@
 			} else {
 				$slug = $params;
 			}
-			$template = isset($site->pages[$slug]) ? $site->pages[$slug] : 'page';
+			$template = isset($site->pages[$slug]) ? $site->pages[$slug] : $slug;
 			$page = sprintf('%s/pages/%s.php', $templates_dir, $template);
-			if ( (! isset($site->pages[$slug]) ) || !file_exists($page) ) {
+			if ( (!isset($site->pages[$slug]) && $whitelist ) || !file_exists($page) ) {
 				# The page does not exist
 				$slug = '404';
 				$site->addBodyClass('error-404');
@@ -266,15 +284,14 @@
 			if ( is_array($mixed) ) {
 				# If is an array we should call this recursively for each part
 				foreach($mixed as $part) {
-					$this->getParts($part);
+					$this->getParts($part, $parts_dir);
 				}
 			} else if ( is_string($mixed) ) {
 				# If it's an string we just include the file
 				if ($parts_dir == '') {
-					$part = sprintf('%s/parts/%s.php', $this->base_dir, $mixed);
-				} else {
-					$part = sprintf('%s/%s.php', $parts_dir, $mixed);
+					$parts_dir = $this->base_dir;
 				}
+				$part = sprintf('%s/parts/%s.php', $parts_dir, $mixed);
 				if (file_exists($part)) {
 					global $site;
 					# Include the file
@@ -300,10 +317,16 @@
 
 		/**
 		 * Append a class to the body classes array
-		 * @param string $class CSS class name
+		 * @param mixed $class 	Class name or array with class names
 		 */
 		function addBodyClass($class) {
-			$this->slugs[] = $class;
+			if ( is_array($class) ) {
+				foreach ($class as $item) {
+					$this->addBodyClass($item);
+				}
+			} else {
+				$this->slugs[] = $class;
+			}
 		}
 
 		/**
@@ -398,10 +421,32 @@
 
 		/**
 		 * Output a well-formed script tag to the specified script
-		 * @param  string $name Name of the script
+		 * @param  string $name 	Name of the script
 		 */
 		function enqueueScript($name) {
 			$this->enqueued_scripts[] = $name;
+		}
+
+		/**
+		 * Output the specified style
+		 * @param  string $style 	Registered style name
+		 */
+		function includeStyle($style) {
+			if ( isset( $this->styles[$style] ) ) {
+				$output = sprintf('<link rel="stylesheet" type="text/css" href="%s">', $this->styles[$style]);
+				echo($output."\n");
+			}
+		}
+
+		/**
+		 * Output the specified script
+		 * @param  string $script 	Registered script name
+		 */
+		function includeScript($script) {
+			if ( isset( $this->scripts[$script] ) ) {
+				$output = sprintf('<script type="text/javascript" src="%s"></script>', $this->scripts[$script]);
+				echo($output."\n");
+			}
 		}
 
 		/**
@@ -409,10 +454,7 @@
 		 */
 		function includeStyles() {
 			foreach ($this->enqueued_styles as $style) {
-				if ( isset( $this->styles[$style] ) ) {
-					$output = sprintf('<link rel="stylesheet" type="text/css" href="%s">', $this->styles[$style]);
-					echo($output."\n");
-				}
+				$this->includeStyle($style);
 			}
 		}
 
@@ -421,10 +463,7 @@
 		 */
 		function includeScripts() {
 			foreach ($this->enqueued_scripts as $script) {
-				if ( isset( $this->scripts[$script] ) ) {
-					$output = sprintf('<script type="text/javascript" src="%s"></script>', $this->scripts[$script]);
-					echo($output."\n");
-				}
+				$this->includeScript($script);
 			}
 		}
 
@@ -446,10 +485,10 @@
 		function getPageTitle($prefix = '', $suffix = '', $separator = '-') {
 			$ret = $this->page_title;
 			if (! empty($prefix) ) {
-				$ret = sprintf('%s %s %s', $prefix, $separator, $ret);
+				$ret = sprintf('%s %s %s', htmlentities($prefix), $separator, $ret);
 			}
 			if (! empty($suffix) ) {
-				$ret = sprintf('%s %s %s', $ret, $separator, $suffix);
+				$ret = sprintf('%s %s %s', $ret, $separator, htmlentities($suffix));
 			}
 			return htmlentities($ret);
 		}
