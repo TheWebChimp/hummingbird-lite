@@ -5,6 +5,8 @@
 	$delete = isset( $_GET['delete'] );
 
 	if ($delete) {
+		$id = isset($_GET['id']) ? $_GET['id'] : '';
+		$gatekeeper->deleteUser($id);
 		$site->redirectTo( $site->urlTo('/manage/gatekeeper') );
 	}
 

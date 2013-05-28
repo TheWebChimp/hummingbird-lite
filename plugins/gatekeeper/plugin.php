@@ -201,7 +201,7 @@
 			global $site;
 			$dbh = $site->getDatabase();
 			try {
-				$sql = "DELETE FROM gk_user WHERE :id = :id";
+				$sql = "DELETE FROM gk_user WHERE id = :id";
 				$stmt = $dbh->prepare($sql);
 				$stmt->bindValue(':id', $id);
 				$stmt->execute();
