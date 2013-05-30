@@ -80,7 +80,8 @@
 			if ($dbh) {
 				try {
 					$sql = "SELECT COUNT(*) FROM gk_user";
-					$dbh->exec($sql);
+					$stmt = $dbh->prepare($sql);
+					$stmt->execute();
 					$installed = true;
 				} catch (PDOException $e) {
 					$installed = false;

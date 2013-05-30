@@ -161,7 +161,8 @@
 			if ($dbh) {
 				try {
 					$sql = "SELECT COUNT(*) FROM cms_posts";
-					$dbh->exec($sql);
+					$stmt = $dbh->prepare($sql);
+					$stmt->execute();
 					$installed = true;
 				} catch (PDOException $e) {
 					$installed = false;
