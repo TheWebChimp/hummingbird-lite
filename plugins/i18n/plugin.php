@@ -21,6 +21,7 @@
 			$this->locales = array();
 			$locale = '';
 			# Register router
+			$site->addRoute('/:lang', 'I18N::getPage', true);
 			$site->addRoute('/:lang/*params', 'I18N::getPage', true);
 		}
 
@@ -40,6 +41,9 @@
 				$page = '';
 				for ($i = 2; $i < count($params); $i++) {
 					$page .= sprintf('/%s', $params[$i]);
+				}
+				if ( empty($page) ) {
+					$page = '/home';
 				}
 				# Override the current locale
 				$i18n->setLocale($lang);
