@@ -109,6 +109,7 @@
 			} else {
 				$slug = $params;
 			}
+			$slug = ltrim( rtrim($slug, '/'), '/' );
 			$template = isset($site->pages[$slug]) ? $site->pages[$slug] : $slug;
 			$page = sprintf('%s/pages/%s.php', $templates_dir, $template);
 			if ( (!isset($site->pages[$slug]) && $whitelist ) || !file_exists($page) ) {
