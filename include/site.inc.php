@@ -1,8 +1,8 @@
 <?php
 	/**
-	 * Hummingbird Lite
-	 * This class is the core of Hummingbird, so please try to keep it
-	 * backwards-compatible if you modify it.
+	 * site.inc.php
+	 * This class is the core of Hummingbird, so please try to keep it backwards-compatible if you modify it.
+	 *
 	 * Version: 	2.0
 	 * Author(s):	biohzrdmx <github.com/biohzrdmx>
 	 * ToDo:		Improve hook engine

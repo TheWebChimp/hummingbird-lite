@@ -1,4 +1,10 @@
 <?php
+	/**
+	 * config.inc.php
+	 * Here's where you configure your Hummingbird instance
+	 */
+
+	# Set the active profile
 	define( 'PROFILE', 'development' );
 
 	/**
@@ -8,7 +14,7 @@
 	$settings = array(
 		'development' => array(
 			# Global settings
-			'site_url' => 'http://localhost/webchimp/GitHub/hummingbird-lite/',
+			'site_url' => 'http://localhost/hummingbird-lite/',
 			# Database settings
 			'db_driver' => 'sqlite', 		# none, sqlite or mysql
 			'db_host' => 'localhost',
@@ -25,7 +31,7 @@
 		),
 		'production' => array(
 			# Global settings
-			'site_url' => 'http://elchangodelaweb.com/site',
+			'site_url' => 'http://yoursite.com',
 			# Database settings
 			'db_driver' => 'none',
 			'db_host' => '',
