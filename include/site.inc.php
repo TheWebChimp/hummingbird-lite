@@ -166,7 +166,7 @@
 			if ( isset($_SERVER['HTTPS']) ) {
 				$base_url = str_replace('http://', 'https://', $base_url);
 			}
-			if ( $path[0] != '/' ) {
+			if ( !empty($path) && $path[0] != '/' ) {
 				$path = '/' . $path;
 			}
 			$ret = sprintf('%s%s', $base_url, $path);
