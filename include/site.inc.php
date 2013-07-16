@@ -537,12 +537,20 @@
 
 		/**
 		 * Hash the specified token
-		 * @param  string  $action Action name
+		 * @param  mixed  $action  Action name(s), maybe a single string or an array of strings
 		 * @param  boolean $echo   Whether to output the resulting string or not
 		 * @return string          The hashed token
 		 */
 		function hashToken($action, $echo = false) {
-			$ret = md5($this->token_salt.$action);
+			if ( is_array($action) ) {
+				$action_str = '';
+				foreach ($action as $item) {
+					$action_str .= $item;
+				}
+				$ret = md5($this->token_salt.$action_str);
+			} else {
+				$ret = md5($this->token_salt.$action);
+			}
 			if ($echo) {
 				echo $ret;
 			}
