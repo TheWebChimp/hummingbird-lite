@@ -47,6 +47,7 @@
 				}
 				# Override the current locale
 				$i18n->setLocale($lang);
+				$site->addBodyClass( sprintf('lang-%s', $lang) );
 				# Call the base router again with the new route
 				$site->matchRoute($page);
 				return true;
