@@ -15,7 +15,7 @@
 		document.createElement('footer');
 		var constants = {
 			siteUrl: '<?php $site->urlTo("", true) ?>',
-			ajaxUrl: '<?php $site->urlTo("/ajax.php", true) ?>'
+			ajaxUrl: '<?php $site->urlTo("/ajax", true) ?>'
 		};
 	</script>
 	<?php $site->includeStyles() ?>
