@@ -336,6 +336,15 @@
 		}
 
 		/**
+		 * Check whether the given page slug is on the current list of slugs
+		 * @param  string  $slug The page slug
+		 * @return boolean       True if the slug is in the slugs array, False otherwise
+		 */
+		function isPage($slug) {
+			return in_array($slug, $this->slugs);
+		}
+
+		/**
 		 * Add a new page to the whitelist
 		 * @param  string $slug     Page slug
 		 * @param  string $template Page template name (without extension)
