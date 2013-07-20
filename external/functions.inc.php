@@ -11,7 +11,9 @@
 	$site->enqueueStyle('style');
 
 	# Include scripts
+	$site->registerScript('script', $site->baseUrl('/js/script.js') );
 	$site->enqueueScript('jquery');
+	$site->enqueueScript('script');
 
 	# Include extra files
 	include ABSPATH . '/external/ajax.inc.php';
