@@ -51,6 +51,9 @@
 				# Call the base router again with the new route
 				$site->matchRoute($page);
 				return true;
+			} else {
+				# Otherwise just set the default locale slug
+				$site->addBodyClass( sprintf('lang-%s', $i18n->getLocale() ) );
 			}
 			return false;
 		}
