@@ -329,7 +329,9 @@
 					$this->addBodyClass($item);
 				}
 			} else {
-				$this->slugs[] = $class;
+				if (! in_array($class, $this->slugs) ) {
+					$this->slugs[] = $class;
+				}
 			}
 		}
 
