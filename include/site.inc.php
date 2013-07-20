@@ -638,5 +638,17 @@
 		function getDatabase() {
 			return $this->dbh;
 		}
+
+		/**
+		 * Display a generic error message
+		 * @param  string $message The error message
+		 */
+		function errorMessage($message) {
+			$markup = '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <title>{$title}</title> <style> body { font-family: sans-serif; font-size: 14px; background: #F8F8F8; } div.center { width: 960px; margin: 0 auto; padding: 1px 0; } p.message { padding: 15px; border: 1px solid #DDD; background: #F1F1F1; color: #656565; } </style> </head> <body> <div class="center"> <p class="message">{$message}</p> </div> </body> </html>';
+			$markup = str_replace('{$title}', $this->getSiteTitle(), $markup);
+			$markup = str_replace('{$message}', $message, $markup);
+			echo $markup;
+			exit;
+		}
 	}
 ?>
