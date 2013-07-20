@@ -90,6 +90,7 @@
 				}
 			} catch (PDOException $e) {
 				error_log( $e->getMessage() );
+				$this->errorMessage( 'Database error ' . $e->getCode() );
 			}
 		}
 
