@@ -16,6 +16,9 @@
 		protected $user_roles;
 		protected $user_id;
 
+		/**
+		 * Constructor
+		 */
 		function __construct() {
 			global $site;
 			#
@@ -32,12 +35,22 @@
 			$this->addUserRole('user', 'User');
 		}
 
+		/**
+		 * Get a gatekeeper page (login/logout)
+		 * @param  array $params 	Router params
+		 * @return null 			TRUE if the page was rendered, FALSE otherwise
+		 */
 		static function getPage($params) {
 			global $site;
 			$dir = dirname(__FILE__);
 			return $site->getPage($params[0], $dir, false);
 		}
 
+		/**
+		 * Get an administrative page
+		 * @param  array $params 	Router params
+		 * @return null 			TRUE if the page was rendered, FALSE otherwise
+		 */
 		static function getAdminPage($params) {
 			global $site;
 			$dir = dirname(__FILE__);
@@ -45,6 +58,10 @@
 			return $site->getPage($page, $dir, false);
 		}
 
+		/**
+		 * Install the plugin
+		 * @return boolean 		TRUE if installation was successful, FALSE otherwise
+		 */
 		function install() {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -74,6 +91,10 @@
 		    return false;
 		}
 
+		/**
+		 * Is the plugin installed?
+		 * @return boolean		TRUE if the plugin is installed, FALSE otherwise
+		 */
 		function isInstalled() {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -92,6 +113,16 @@
 			return $installed;
 		}
 
+		/**
+		 * Create a new user
+		 * @param  string  $name     User name (login name)
+		 * @param  string  $email    User email
+		 * @param  string  $nickname User nickname (display name)
+		 * @param  string  $password Plain-text password
+		 * @param  integer $status   Activation status (1 = active)
+		 * @param  string  $role     User role (admin, suscriber, etc.)
+		 * @return integer           Newly-created user ID
+		 */
 		function createUser($name, $email, $nickname, $password = '', $status = 0, $role ='user') {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -127,14 +158,27 @@
 			return false;
 		}
 
+		/**
+		 * Get the current user
+		 * @return object User object
+		 */
 		function getCurrentUser() {
 			return $this->getUser( $this->user_id );
 		}
 
+		/**
+		 * Get the current user ID
+		 * @return integer User ID
+		 */
 		function getCurrentUserId() {
 			return $this->user_id;
 		}
 
+		/**
+		 * Get an user by ID
+		 * @param  integer $id 	ID of the user to retrieve
+		 * @return object     	User object
+		 */
 		function getUser($id) {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -145,11 +189,17 @@
 				$stmt->execute();
 				return $stmt->fetch();
 			} catch (PDOException $e) {
-				// echo 'Database error: ' . $e->getMessage();
+				echo 'Database error: ' . $e->getMessage();
 			}
 			return false;
 		}
 
+		/**
+		 * Get an user by specifying a field an its value
+		 * @param  string $field The field name (id, name, email, nickname)
+		 * @param  string $value The field value
+		 * @return object        User object
+		 */
 		function getUserBy($field, $value) {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -172,8 +222,15 @@
 			} catch (PDOException $e) {
 				echo 'Database error: ' . $e->getMessage();
 			}
+			return false;
 		}
 
+		/**
+		 * Update an user's info
+		 * @param  integer $id     User ID
+		 * @param  array $fields   Array with fields to update ('field' => value)
+		 * @return mixed           Number of updated rows or false on error
+		 */
 		function updateUser($id, $fields) {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -198,6 +255,10 @@
 			return false;
 		}
 
+		/**
+		 * Delete an user
+		 * @param  integer $id User ID
+		 */
 		function deleteUser($id) {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -211,6 +272,11 @@
 			}
 		}
 
+		/**
+		 * Set or update an user's meta
+		 * @param integer $id    User ID
+		 * @param string  $key   Meta key
+		 */
 		function setUserMeta($id, $key, $value) {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -239,6 +305,14 @@
 			}
 		}
 
+		/**
+		 * Retrieve an user's meta
+		 * @param  integer $id      User ID
+		 * @param  string  $key     Meta key
+		 * @param  string  $value   Meta value
+		 * @param  string  $default Default value to return
+		 * @return string           Meta value
+		 */
 		function getUserMeta($id, $key, $value, $default = '') {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -254,6 +328,13 @@
 			}
 		}
 
+		/**
+		 * Login the user with the specified credentials
+		 * @param  string  $name     User name (login name)
+		 * @param  string  $password Plain-text password
+		 * @param  boolean $remember Whether to set a long-lasting cookie (2 weeks) or not
+		 * @return boolean           True on success, false on failure
+		 */
 		function login($name, $password, $remember = false) {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -276,6 +357,10 @@
 			return false;
 		}
 
+		/**
+		 * Logout the current user
+		 * @return boolean True on success, false on failure
+		 */
 		function logout() {
 			global $site;
 			$url_parts = parse_url( $site->baseUrl() );
@@ -285,8 +370,17 @@
 			return $ret;
 		}
 
+		/**
+		 * Check whether there's an user active or not and show a login screen if it isn't
+		 * @param  string  $role    Required user's role
+		 * @param  string  $return  Url to return after login
+		 * @param  boolean $headers Whether to set cache control headers or not
+		 */
 		function requireLogin($role = '', $return = '', $headers = true) {
 			global $site;
+			if (! $this->isInstalled() ) {
+				$site->errorMessage('Gatekeeper is not installed properly.');
+			}
 			if ($headers) {
 				header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 				header("Cache-Control: no-cache");
@@ -298,6 +392,11 @@
 			}
 		}
 
+		/**
+		 * Check whether there's an active user or not
+		 * @param  string $role Required user's role
+		 * @return boolean      True if there's an user active, false otherwise
+		 */
 		function checkLogin($role = '') {
 			global $site;
 			$dbh = $site->getDatabase();
@@ -334,16 +433,29 @@
 		    return false;
 		}
 
+		/**
+		 * Get the list of registered user roles
+		 * @return array List of user roles
+		 */
 		function getUserRoles() {
 			return $this->user_roles;
 		}
 
-		function delete_user_role($name) {
+		/**
+		 * Delete an user role
+		 * @param  string $name Name (slug) of the rule to delete
+		 */
+		function deleteUserRole($name) {
 			if ( isset( $this->user_roles[$name] ) ) {
 				unset($this->user_roles[$name]);
 			}
 		}
 
+		/**
+		 * Register a new user role
+		 * @param string $name  Name of the role (slug, e.g. 'admin')
+		 * @param string $label Label of the role (display name, e.g. 'Administrator')
+		 */
 		function addUserRole($name, $label) {
 			$this->user_roles[$name] = $label;
 		}
