@@ -64,10 +64,12 @@
 			# Register base styles
 			$this->registerStyle('bootstrap', $this->baseUrl('/css/bootstrap.min.css') );
 			$this->registerStyle('bootstrap-responsive', $this->baseUrl('/css/bootstrap-responsive.min.css') );
+			$this->registerStyle('magnific-popup', $this->baseUrl('/css/magnific-popup.css') );
 			# Register base scripts
 			$this->registerScript('jquery', $this->baseUrl('/js/jquery-1.9.1.min.js') );
 			$this->registerScript('jquery.form', $this->baseUrl('/js/jquery.form.js') );
 			$this->registerScript('jquery.cycle', $this->baseUrl('/js/jquery.cycle.all.js') );
+			$this->registerScript('jquery.magnific-popup', $this->baseUrl('/js/jquery.magnific-popup.min.js') );
 			$this->registerScript('underscore', $this->baseUrl('/js/underscore.js') );
 			$this->registerScript('backbone', $this->baseUrl('/js/backbone.js') );
 			$this->registerScript('bootstrap', $this->baseUrl('/js/bootstrap.min.js') );
