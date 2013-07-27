@@ -20,6 +20,7 @@
 		protected $styles;
 		protected $slugs;
 		protected $params;
+		protected $page;
 		protected $pages;
 		protected $plugins;
 		protected $site_title;
@@ -124,6 +125,8 @@
 			} else {
 				$site->addBodyClass($slug . '-page');
 			}
+			# Save the current page slug
+			$site->page = $slug;
 			# Include the file
 			extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
 			include $page;
@@ -339,11 +342,20 @@
 		}
 
 		/**
-		 * Check whether the given page slug is on the current list of slugs
+		 * Check whether the given page slug is the current one
 		 * @param  string  $slug The page slug
-		 * @return boolean       True if the slug is in the slugs array, False otherwise
+		 * @return boolean       True if the slug is in the current one, False otherwise
 		 */
 		function isPage($slug) {
+			return (strcasecmp($slug, $this->page) == 0);
+		}
+
+		/**
+		 * Check whether the given slug is on the current list of slugs
+		 * @param  string  $slug The slug
+		 * @return boolean       True if the slug is in the slugs array, False otherwise
+		 */
+		function hasSlug($slug) {
 			return in_array($slug, $this->slugs);
 		}
 
