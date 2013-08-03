@@ -126,7 +126,7 @@
 				$site->addBodyClass($slug . '-page');
 			}
 			# Save the current page slug
-			$site->page = $slug;
+			$site->page = str_replace('-page', '', $slug);
 			# Include the file
 			extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
 			include $page;
