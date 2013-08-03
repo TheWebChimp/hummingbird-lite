@@ -515,10 +515,10 @@
 		function getPageTitle($prefix = '', $suffix = '', $separator = '-') {
 			$ret = $this->page_title;
 			if (! empty($prefix) ) {
-				$ret = sprintf('%s %s %s', htmlentities($prefix), $separator, $ret);
+				$ret = sprintf('%s %s %s', htmlspecialchars($prefix), $separator, $ret);
 			}
 			if (! empty($suffix) ) {
-				$ret = sprintf('%s %s %s', $ret, $separator, htmlentities($suffix));
+				$ret = sprintf('%s %s %s', $ret, $separator, htmlspecialchars($suffix));
 			}
 			return $ret;
 		}
