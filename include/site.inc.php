@@ -106,7 +106,7 @@
 		static function getPage($params, $templates_dir = '', $whitelist = true) {
 			global $site;
 			if ( empty($templates_dir) ) {
-				$templates_dir = $site->base_dir;
+				$templates_dir = sprintf('%s/pages', $site->base_dir);
 			}
 			if ( is_array($params) ) {
 				$slug = isset( $params[1] ) ? $params[1] : 'home';
@@ -115,7 +115,7 @@
 			}
 			$slug = ltrim( rtrim($slug, '/'), '/' );
 			$template = isset($site->pages[$slug]) && $whitelist ? $site->pages[$slug] : $slug;
-			$page = sprintf('%s/pages/%s.php', $templates_dir, $template);
+			$page = sprintf('%s/%s.php', $templates_dir, $template);
 			if ( (!isset($site->pages[$slug]) && $whitelist ) || !file_exists($page) ) {
 				# The page does not exist
 				$slug = '404';
