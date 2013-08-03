@@ -520,7 +520,7 @@
 			if (! empty($suffix) ) {
 				$ret = sprintf('%s %s %s', $ret, $separator, htmlentities($suffix));
 			}
-			return htmlentities($ret);
+			return $ret;
 		}
 
 		/**
