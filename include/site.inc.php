@@ -299,9 +299,9 @@
 			} else if ( is_string($mixed) ) {
 				# If it's an string we just include the file
 				if ($parts_dir == '') {
-					$parts_dir = $this->base_dir;
+					$parts_dir = sprintf('%s/parts', $this->base_dir);
 				}
-				$part = sprintf('%s/parts/%s.php', $parts_dir, $mixed);
+				$part = sprintf('%s/%s.php', $parts_dir, $mixed);
 				if (file_exists($part)) {
 					global $site;
 					# Include the file
