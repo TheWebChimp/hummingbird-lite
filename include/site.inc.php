@@ -289,12 +289,12 @@
 		 * Load the specified template parts
 		 * @param  mixed $mixed An string or array of parts
 		 */
-		function getParts($mixed, $parts_dir = '') {
+		function getParts($mixed, $parts_dir = '', $params = array()) {
 			# Check parameter type
 			if ( is_array($mixed) ) {
 				# If is an array we should call this recursively for each part
 				foreach($mixed as $part) {
-					$this->getParts($part, $parts_dir);
+					$this->getParts($part, $parts_dir, $params);
 				}
 			} else if ( is_string($mixed) ) {
 				# If it's an string we just include the file
