@@ -161,6 +161,31 @@
 			}
 			return $ret;
 		}
+
+		/**
+		 * Get a translated list and optionally print it
+		 * @param  string  $key   Translation key
+		 * @param  boolean $echo  Whether to print the result or not
+		 * @param  array   $attrs Any extra attribute to add to the list tag
+		 * @param  array   $tags  Array with list tags (defaults to ['ul', 'li'])
+		 * @return string         Translated select tag markup
+		 */
+		function lists($key, $echo = true, $tags = array('ul', 'li'), $attrs = array()) {
+			$items = $this->translate($key, false);
+			$attr_text = '';
+			foreach ($attrs as $attr => $value) {
+				$attr_text .= sprintf(' %s="%s"', $attr, $value);
+			}
+			$ret = sprintf('<'.$tags[0].'%s>', $attr_text);
+			foreach ($items as $item) {
+				$ret .= '<'.$tags[1].'>'.$item.'</'.$tags[1].'>';
+			}
+			$ret .= '</'.$tags[0].'>';
+			if ($echo) {
+				echo $ret;
+			}
+			return $ret;
+		}
 	}
 
 	# Instantiate the plugin object
