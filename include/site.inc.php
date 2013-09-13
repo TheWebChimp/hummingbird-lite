@@ -20,6 +20,7 @@
 		protected $styles;
 		protected $slugs;
 		protected $params;
+		protected $page;
 		protected $pages;
 		protected $plugins;
 		protected $site_title;
@@ -105,7 +106,7 @@
 		static function getPage($params, $templates_dir = '', $whitelist = true) {
 			global $site;
 			if ( empty($templates_dir) ) {
-				$templates_dir = $site->base_dir;
+				$templates_dir = sprintf('%s/pages', $site->base_dir);
 			}
 			if ( is_array($params) ) {
 				$slug = isset( $params[1] ) ? $params[1] : 'home';
@@ -114,7 +115,7 @@
 			}
 			$slug = ltrim( rtrim($slug, '/'), '/' );
 			$template = isset($site->pages[$slug]) && $whitelist ? $site->pages[$slug] : $slug;
-			$page = sprintf('%s/pages/%s.php', $templates_dir, $template);
+			$page = sprintf('%s/%s.php', $templates_dir, $template);
 			if ( (!isset($site->pages[$slug]) && $whitelist ) || !file_exists($page) ) {
 				# The page does not exist
 				$slug = '404';
@@ -124,6 +125,8 @@
 			} else {
 				$site->addBodyClass($slug . '-page');
 			}
+			# Save the current page slug
+			$site->page = str_replace('-page', '', $slug);
 			# Include the file
 			extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
 			include $page;
@@ -286,19 +289,19 @@
 		 * Load the specified template parts
 		 * @param  mixed $mixed An string or array of parts
 		 */
-		function getParts($mixed, $parts_dir = '') {
+		function getParts($mixed, $parts_dir = '', $params = array()) {
 			# Check parameter type
 			if ( is_array($mixed) ) {
 				# If is an array we should call this recursively for each part
 				foreach($mixed as $part) {
-					$this->getParts($part, $parts_dir);
+					$this->getParts($part, $parts_dir, $params);
 				}
 			} else if ( is_string($mixed) ) {
 				# If it's an string we just include the file
 				if ($parts_dir == '') {
-					$parts_dir = $this->base_dir;
+					$parts_dir = sprintf('%s/parts', $this->base_dir);
 				}
-				$part = sprintf('%s/parts/%s.php', $parts_dir, $mixed);
+				$part = sprintf('%s/%s.php', $parts_dir, $mixed);
 				if (file_exists($part)) {
 					global $site;
 					# Include the file
@@ -339,11 +342,20 @@
 		}
 
 		/**
-		 * Check whether the given page slug is on the current list of slugs
+		 * Check whether the given page slug is the current one
 		 * @param  string  $slug The page slug
-		 * @return boolean       True if the slug is in the slugs array, False otherwise
+		 * @return boolean       True if the slug is in the current one, False otherwise
 		 */
 		function isPage($slug) {
+			return (strcasecmp($slug, $this->page) == 0);
+		}
+
+		/**
+		 * Check whether the given slug is on the current list of slugs
+		 * @param  string  $slug The slug
+		 * @return boolean       True if the slug is in the slugs array, False otherwise
+		 */
+		function hasSlug($slug) {
 			return in_array($slug, $this->slugs);
 		}
 
@@ -503,12 +515,12 @@
 		function getPageTitle($prefix = '', $suffix = '', $separator = '-') {
 			$ret = $this->page_title;
 			if (! empty($prefix) ) {
-				$ret = sprintf('%s %s %s', htmlentities($prefix), $separator, $ret);
+				$ret = sprintf('%s %s %s', htmlspecialchars($prefix), $separator, $ret);
 			}
 			if (! empty($suffix) ) {
-				$ret = sprintf('%s %s %s', $ret, $separator, htmlentities($suffix));
+				$ret = sprintf('%s %s %s', $ret, $separator, htmlspecialchars($suffix));
 			}
-			return htmlentities($ret);
+			return $ret;
 		}
 
 		/**
