@@ -601,6 +601,17 @@
 		}
 
 		/**
+		 * Validate the given token with the specified action
+		 * @param  string $token  Hashed token
+		 * @param  string $action Action name
+		 * @return boolean        True if the token is valid, False otherwise
+		 */
+		function validateToken($token, $action) {
+			$check = $this->haskToken($action);
+			return ($token == $check);
+		}
+
+		/**
 		 * Register a hook listener
 		 * @param  string  $hook      Hook name
 		 * @param  string  $functName Callback function name
