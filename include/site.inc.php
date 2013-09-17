@@ -38,6 +38,7 @@
 		function __construct($settings) {
 			# Load settings
 			$this->profile = $settings[PROFILE];
+			$this->globals = $settings['shared'];
 			$this->base_dir = ABSPATH;
 			$this->base_url = $this->profile['site_url'];
 			# Create arrays
@@ -644,6 +645,20 @@
 			$ret = $default;
 			if ( isset( $this->profile[$key] ) ) {
 				$ret = $this->profile[$key];
+			}
+			return $ret;
+		}
+
+		/**
+		 * Get the specified option from the global profile
+		 * @param  string $key     Option name
+		 * @param  string $default Default value
+		 * @return mixed           The option value (array, string, integer, boolean, etc)
+		 */
+		function getGlobal($key, $default = '') {
+			$ret = $default;
+			if ( isset( $this->globals[$key] ) ) {
+				$ret = $this->globals[$key];
 			}
 			return $ret;
 		}
