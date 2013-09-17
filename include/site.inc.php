@@ -64,6 +64,7 @@
 			$this->page_title = $this->site_title;
 			# Register base styles
 			$this->registerStyle('bootstrap', $this->baseUrl('/css/bootstrap.min.css') );
+			$this->registerStyle('bootstrap3', $this->baseUrl('/css/bootstrap3.min.css') );
 			$this->registerStyle('bootstrap-responsive', $this->baseUrl('/css/bootstrap-responsive.min.css') );
 			$this->registerStyle('magnific-popup', $this->baseUrl('/css/magnific-popup.css') );
 			# Register base scripts
@@ -74,6 +75,7 @@
 			$this->registerScript('underscore', $this->baseUrl('/js/underscore.js') );
 			$this->registerScript('backbone', $this->baseUrl('/js/backbone.js') );
 			$this->registerScript('bootstrap', $this->baseUrl('/js/bootstrap.min.js') );
+			$this->registerScript('bootstrap3', $this->baseUrl('/js/bootstrap3.min.js') );
 			# Create database connection
 			try {
 				switch ( $this->profile['db_driver'] ) {
