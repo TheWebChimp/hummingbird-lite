@@ -1,5 +1,5 @@
 <?php
-	$cur_dir = dirname(__FILE__);
+	$cur_dir = sprintf( '%s/parts', dirname(__FILE__) );
 	$gatekeeper->requireLogin('admin', '/admin/users');
 
 	$delete = isset( $_GET['delete'] );

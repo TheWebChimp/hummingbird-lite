@@ -42,7 +42,7 @@
 		 */
 		static function getPage($params) {
 			global $site;
-			$dir = dirname(__FILE__);
+			$dir = sprintf( '%s/pages', dirname(__FILE__) );
 			return $site->getPage($params[0], $dir, false);
 		}
 
@@ -53,7 +53,7 @@
 		 */
 		static function getAdminPage($params) {
 			global $site;
-			$dir = dirname(__FILE__);
+			$dir = sprintf( '%s/pages', dirname(__FILE__) );
 			$page = isset( $params[1] ) ? $params[1] : 'manage';
 			return $site->getPage($page, $dir, false);
 		}
@@ -85,7 +85,7 @@
 					}
 					return true;
 				} catch (PDOException $e) {
-				    echo 'Database error: ' . $e->getMessage();
+				    // echo 'Database error: ' . $e->getMessage();
 				}
 			}
 		    return false;
@@ -153,7 +153,7 @@
 				$stmt->execute();
 				return $dbh->lastInsertId();
 			} catch (PDOException $e) {
-			    echo 'Database error: ' . $e->getMessage();
+			    // echo 'Database error: ' . $e->getMessage();
 			}
 			return false;
 		}
@@ -189,7 +189,7 @@
 				$stmt->execute();
 				return $stmt->fetch();
 			} catch (PDOException $e) {
-				echo 'Database error: ' . $e->getMessage();
+				// echo 'Database error: ' . $e->getMessage();
 			}
 			return false;
 		}
@@ -220,7 +220,7 @@
 				$stmt->execute();
 				return $stmt->fetch();
 			} catch (PDOException $e) {
-				echo 'Database error: ' . $e->getMessage();
+				// echo 'Database error: ' . $e->getMessage();
 			}
 			return false;
 		}
@@ -250,7 +250,7 @@
 				$stmt->execute();
 				return $stmt->rowCount();
 			} catch (PDOException $e) {
-				echo 'Database error: ' . $e->getMessage();
+				// echo 'Database error: ' . $e->getMessage();
 			}
 			return false;
 		}
@@ -268,7 +268,7 @@
 				$stmt->bindValue(':id', $id);
 				$stmt->execute();
 			} catch (PDOException $e) {
-				echo 'Database error: ' . $e->getMessage();
+				// echo 'Database error: ' . $e->getMessage();
 			}
 		}
 
@@ -301,7 +301,7 @@
 					$stmt->execute();
 				}
 			} catch (PDOException $e) {
-				echo 'Database error: ' . $e->getMessage();
+				// echo 'Database error: ' . $e->getMessage();
 			}
 		}
 

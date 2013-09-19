@@ -1,5 +1,5 @@
 <?php
-	$cur_dir = dirname(__FILE__);
+	$cur_dir = sprintf( '%s/parts', dirname(__FILE__) );
 
 	if ($_POST) {
 		$token = isset($_POST['token']) ? $_POST['token'] : '';
