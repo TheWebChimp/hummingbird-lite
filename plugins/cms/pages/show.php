@@ -1,5 +1,5 @@
 <?php
-	$cur_dir = dirname(__FILE__);
+	$cur_dir = sprintf( '%s/parts', dirname(__FILE__) );
 	$type = isset($_GET['type']) ? $_GET['type'] : '';
 	$page = isset($_GET['page']) ? $_GET['page'] : 1;
 	$limit = isset($_GET['per_page']) ? $_GET['per_page'] : 10;

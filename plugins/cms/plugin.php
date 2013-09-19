@@ -53,6 +53,7 @@
 			global $cms;
 			$dbh = $site->getDatabase();
 			$post_id = false;
+			$dir = sprintf( '%s/pages', dirname(__FILE__) );
 
 			# Get the corerct parameters
 			if ( count($params) < 3) {
@@ -86,7 +87,7 @@
 						# Yay! The post's type has a valid prefix
 						$post_id = $row->id;
 						$site->post_id = $post_id;
-						$site->getPage('single', dirname(__FILE__));
+						$site->getPage('single', $dir);
 					}
 				} else {
 
@@ -94,7 +95,7 @@
 					if ( array_key_exists($post_name, $cms->post_types) ) {
 						$post_id = -1;
 						$site->post_type = $post_name;
-						$site->getPage('archive', dirname(__FILE__));
+						$site->getPage('archive', $dir);
 					}
 				}
 
@@ -112,7 +113,7 @@
 		 */
 		static function getAdminPage($params) {
 			global $site;
-			$dir = dirname(__FILE__);
+			$dir = sprintf( '%s/pages', dirname(__FILE__) );
 			$page = isset( $params[1] ) ? $params[1] : 'manage';
 			return $site->getPage($page, $dir, false);
 		}

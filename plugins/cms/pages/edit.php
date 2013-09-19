@@ -1,5 +1,5 @@
 <?php
-	$cur_dir = dirname(__FILE__);
+	$cur_dir = sprintf( '%s/parts', dirname(__FILE__) );
 	$type = isset($_GET['type']) ? $_GET['type'] : '';
 	$post_type = $cms->getPostType($type);
 	if (!$post_type) {
