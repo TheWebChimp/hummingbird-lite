@@ -7,8 +7,10 @@
 	# Basic set-up ------------------------------------------------------------
 
 	# Include styles
+	$site->registerStyle('sticky-footer', $site->baseUrl('/css/sticky-footer.css') );
 	$site->registerStyle('style', $site->baseUrl('/css/style.css') );
 	$site->enqueueStyle('style');
+	$site->enqueueStyle('sticky-footer');
 
 	# Include scripts
 	$site->registerScript('script', $site->baseUrl('/js/script.js') );
