@@ -221,7 +221,7 @@
 
 			# Get the request and remove the domain
 			$request = trim($_SERVER['REQUEST_URI'], '/');
-			$request = preg_replace("/$domain/", '', $request, 1);
+			$request = preg_replace("/".str_replace('/', '\/', $domain)."/", '', $request, 1);
 			$request = ltrim($request, '/');
 
 			# Get the parameters
