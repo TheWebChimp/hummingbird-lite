@@ -145,7 +145,7 @@
 		 * @param  array   $attrs 		Any extra attribute to add to the select tag
 		 * @return string         		Translated select tag markup
 		 */
-		function select($key, $echo = true, $sel = '', $attrs = array()) {
+		function select($key, $echo = true, $sel = false, $attrs = array()) {
 			$options = $this->translate($key, false);
 			$attr_text = '';
 			foreach ($attrs as $attr => $value) {
@@ -153,7 +153,7 @@
 			}
 			$ret = sprintf('<select%s>', $attr_text);
 			foreach ($options as $option => $name) {
-				$ret .= '<option '.($option == $sel ? 'selected="selected"' : '').'value="'.$option.'">'.$name.'</option>';
+				$ret .= '<option '.($sel !== false && $option == $sel ? 'selected="selected"' : '').'value="'.$option.'">'.$name.'</option>';
 			}
 			$ret .= '</select>';
 			if ($echo) {
