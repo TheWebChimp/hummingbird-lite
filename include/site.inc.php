@@ -354,6 +354,14 @@
 		}
 
 		/**
+		 * Return the current page slug
+		 * @return string  		The page slug
+		 */
+		function getCurPage() {
+			return $this->page;
+		}
+
+		/**
 		 * Check whether the given slug is on the current list of slugs
 		 * @param  string  $slug The slug
 		 * @return boolean       True if the slug is in the slugs array, False otherwise
