@@ -147,15 +147,19 @@
 		 */
 		function select($key, $echo = true, $sel = false, $attrs = array()) {
 			$options = $this->translate($key, false);
-			$attr_text = '';
-			foreach ($attrs as $attr => $value) {
-				$attr_text .= sprintf(' %s="%s"', $attr, $value);
+			if ( is_array($options) ) {
+				$attr_text = '';
+				foreach ($attrs as $attr => $value) {
+					$attr_text .= sprintf(' %s="%s"', $attr, $value);
+				}
+				$ret = sprintf('<select%s>', $attr_text);
+				foreach ($options as $option => $name) {
+					$ret .= '<option '.($sel !== false && $option == $sel ? 'selected="selected"' : '').'value="'.$option.'">'.$name.'</option>';
+				}
+				$ret .= '</select>';
+			} else {
+				$ret = $key;
 			}
-			$ret = sprintf('<select%s>', $attr_text);
-			foreach ($options as $option => $name) {
-				$ret .= '<option '.($sel !== false && $option == $sel ? 'selected="selected"' : '').'value="'.$option.'">'.$name.'</option>';
-			}
-			$ret .= '</select>';
 			if ($echo) {
 				echo $ret;
 			}
