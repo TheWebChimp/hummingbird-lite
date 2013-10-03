@@ -349,9 +349,9 @@
 				if ($auth) {
 					$url_parts = parse_url( $site->baseUrl() );
 					$path = sprintf('%s/', isset($url_parts['path']) ? $url_parts['path'] : '');
-				    $cookie = $cookies->buildCookie(strtotime("+12 hour"), $row->id, $auth);
+				    $cookie = $cookies->buildCookie(strtotime($remember  ? "+2 week" : "+12 hour"), $row->id, $auth);
 				    $this->user_id = $row->id;
-				    return setcookie("gatekeeper", $cookie, strtotime("+12 hour"), '/', $url_parts['host']);
+				    return setcookie("gatekeeper", $cookie, strtotime($remember  ? "+2 week" : "+12 hour"), '/', $url_parts['host']);
 				}
 			}
 			return false;
