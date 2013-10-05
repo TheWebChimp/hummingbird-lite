@@ -396,6 +396,19 @@
 		}
 
 		/**
+		 * Removes the specified page
+		 * @param  string $slug  Page slug
+		 * @return boolean       True if the page was found and removed, false otherwise
+		 */
+		function removePage($slug) {
+			if ( isset( $this->pages[$slug] ) ) {
+				unset( $this->pages[$slug] );
+				return true;
+			}
+			return false;
+		}
+
+		/**
 		 * Sanitize the given string (slugify it)
 		 * @param  string $str       The string to sanitize
 		 * @param  array  $replace   Optional, an array of characters to replace
