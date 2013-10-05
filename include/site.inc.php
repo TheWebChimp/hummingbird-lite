@@ -128,7 +128,7 @@
 				$page = sprintf('%s/pages/%s.php', $site->base_dir, $slug);
 				header('HTTP/1.0 404 Not Found');
 			} else {
-				$site->addBodyClass($slug . '-page');
+				$site->addBodyClass( $slug . ( preg_match('/^(.*)-page$/', $slug) === 1 ? '' : '-page') );
 			}
 			# Save the current page slug
 			$site->page = str_replace('-page', '', $slug);
