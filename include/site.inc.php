@@ -203,6 +203,19 @@
 		}
 
 		/**
+		 * Removes the specified route
+		 * @param  string $route Parametrized route
+		 * @return boolean       True if the route was found and removed, false otherwise
+		 */
+		function removeRoute($route) {
+			if ( isset( $this->routes[$route] ) ) {
+				unset( $this->routes[$route] );
+				return true;
+			}
+			return false;
+		}
+
+		/**
 		 * Process current request
 		 * @return boolean TRUE if routing has succeeded, FALSE otherwise
 		 */
