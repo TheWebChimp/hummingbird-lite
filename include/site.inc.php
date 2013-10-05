@@ -15,6 +15,7 @@
 		protected $base_url;
 		protected $base_dir;
 		protected $routes;
+		protected $default_route;
 		protected $actions;
 		protected $scripts;
 		protected $styles;
@@ -58,6 +59,7 @@
 			$this->addRoute('/:page', 'Site::getPage');
 			# Add pages
 			$this->addPage('home', 'home-page');
+			$this->default_route = '/home';
 			# Initialize variables
 			$this->pass_salt = $settings['shared']['pass_salt'];
 			$this->token_salt = $settings['shared']['token_salt'];
@@ -216,6 +218,22 @@
 		}
 
 		/**
+		 * Get the default route
+		 * @return string The default route
+		 */
+		function getDefaultRoute() {
+			return $this->default_route;
+		}
+
+		/**
+		 * Set the default route
+		 * @param string $route Full route, defaults to '/home'
+		 */
+		function setDefaultRoute($route) {
+			$this->default_route = $route;
+		}
+
+		/**
 		 * Process current request
 		 * @return boolean TRUE if routing has succeeded, FALSE otherwise
 		 */
@@ -254,7 +272,7 @@
 
 			# Make sure we have a valid route
 			if ( empty($cur_route) ) {
-				$cur_route = '/home';
+				$cur_route = $this->default_route;
 			}
 
 			if (! $this->matchRoute($cur_route) ) {
