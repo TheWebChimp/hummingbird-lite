@@ -15,6 +15,7 @@
 		protected $base_url;
 		protected $base_dir;
 		protected $routes;
+		protected $default_route;
 		protected $actions;
 		protected $scripts;
 		protected $styles;
@@ -58,6 +59,7 @@
 			$this->addRoute('/:page', 'Site::getPage');
 			# Add pages
 			$this->addPage('home', 'home-page');
+			$this->default_route = '/home';
 			# Initialize variables
 			$this->pass_salt = $settings['shared']['pass_salt'];
 			$this->token_salt = $settings['shared']['token_salt'];
@@ -126,7 +128,7 @@
 				$page = sprintf('%s/pages/%s.php', $site->base_dir, $slug);
 				header('HTTP/1.0 404 Not Found');
 			} else {
-				$site->addBodyClass($slug . '-page');
+				$site->addBodyClass( $slug . ( preg_match('/^(.*)-page$/', $slug) === 1 ? '' : '-page') );
 			}
 			# Save the current page slug
 			$site->page = str_replace('-page', '', $slug);
@@ -203,6 +205,35 @@
 		}
 
 		/**
+		 * Removes the specified route
+		 * @param  string $route Parametrized route
+		 * @return boolean       True if the route was found and removed, false otherwise
+		 */
+		function removeRoute($route) {
+			if ( isset( $this->routes[$route] ) ) {
+				unset( $this->routes[$route] );
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * Get the default route
+		 * @return string The default route
+		 */
+		function getDefaultRoute() {
+			return $this->default_route;
+		}
+
+		/**
+		 * Set the default route
+		 * @param string $route Full route, defaults to '/home'
+		 */
+		function setDefaultRoute($route) {
+			$this->default_route = $route;
+		}
+
+		/**
 		 * Process current request
 		 * @return boolean TRUE if routing has succeeded, FALSE otherwise
 		 */
@@ -241,7 +272,7 @@
 
 			# Make sure we have a valid route
 			if ( empty($cur_route) ) {
-				$cur_route = '/home';
+				$cur_route = $this->default_route;
 			}
 
 			if (! $this->matchRoute($cur_route) ) {
@@ -380,6 +411,19 @@
 				$template = $slug;
 			}
 			$this->pages[$slug] = $template;
+		}
+
+		/**
+		 * Removes the specified page
+		 * @param  string $slug  Page slug
+		 * @return boolean       True if the page was found and removed, false otherwise
+		 */
+		function removePage($slug) {
+			if ( isset( $this->pages[$slug] ) ) {
+				unset( $this->pages[$slug] );
+				return true;
+			}
+			return false;
 		}
 
 		/**
