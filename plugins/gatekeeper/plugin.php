@@ -321,7 +321,8 @@
 			$stmt->bindValue(':user_id', $id);
 			$stmt->bindValue(':meta_key', $key);
 			$stmt->execute();
-			if ( $stmt->fetch() ) {
+			$row = $stmt->fetch();
+			if ( $row ) {
 				return $row->meta_value;
 			} else {
 				return $default;
