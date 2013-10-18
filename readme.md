@@ -32,7 +32,13 @@ Finally, set your site's name and generate the random salt values under the `sha
 
 Aditionally you may activate any extra plugins by adding them to the `plugins` key, just add its slug.
 
-	Note: Sometimes the routing engine will not work out of the box even if you set the site_url, so you must also set the RewriteBase directive on the .htaccess file.
+### Troubleshooting ###
+
+#### 404 errors ####
+Sometimes the routing engine will not work out of the box even if you set `site_url`, so you must also set the `RewriteBase` directive on the .htaccess file.
+
+#### 301 redirections ####
+Pay special attention to the `site_url` parameter: the default .htaccess strips www. from the URLs and this causes a 301 redirect. You may disable this by editing the .htaccess file.
 
 ### Credits ###
 
