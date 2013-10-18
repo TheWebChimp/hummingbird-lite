@@ -81,7 +81,7 @@
 			$this->registerScript('bootstrap', $this->baseUrl('/js/bootstrap.min.js') );
 			$this->registerScript('bootstrap3', $this->baseUrl('/js/bootstrap3.min.js') );
 			# Default dirs
-			$this->$dirs = array(
+			$this->dirs = array(
 				'plugins' => '/plugins',
 				'pages'   => '/pages',
 				'parts'   => '/parts',
