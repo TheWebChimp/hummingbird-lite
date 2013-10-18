@@ -373,7 +373,7 @@
 
 		/**
 		 * Check whether there's an user active or not and show a login screen if it isn't
-		 * @param  string  $role    Required user's role
+		 * @param  mixed   $role    Required user's role or array or valid roles
 		 * @param  string  $return  Url to return after login
 		 * @param  boolean $headers Whether to set cache control headers or not
 		 */
@@ -400,7 +400,7 @@
 
 		/**
 		 * Check whether there's an active user or not
-		 * @param  string $role   Required user's role
+		 * @param  mixed   $role  Required user's role or array or valid roles
 		 * @param  string $reason Optional, will contain the reason why the user isn´t valid: it's either not set or its role isn't compatible
 		 * @return boolean        True if there's an user active, false otherwise
 		 */
@@ -423,7 +423,8 @@
 					$stmt->execute();
 					if ($row = $stmt->fetch()) {
 						# Check role
-						if ($role != '' && $role != $row->role) {
+						$has_role = is_array($role) ? isset($row->role, $role) : $role == $row->role;
+						if ($role != '' && !$has_role) {
 							if ( func_num_args() == 2 ) {
 								$reason = 'role';
 							}
