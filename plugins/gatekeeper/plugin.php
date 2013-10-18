@@ -387,18 +387,24 @@
 				header("Cache-Control: no-cache");
 				header("Pragma: no-cache");
 			}
-			if (! $this->checkLogin($role) ) {
-				$redirect = sprintf( '/login/?return=%s', ltrim($return, '/') );
+			$reason = '';
+			if (! $this->checkLogin($role, $reason) ) {
+				if ($reason == 'role') {
+					$redirect = sprintf( '/login/?return=%s&reason=perm', ltrim($return, '/') );
+				} else {
+					$redirect = sprintf( '/login/?return=%s', ltrim($return, '/') );
+				}
 				$site->redirectTo( $site->urlTo($redirect) );
 			}
 		}
 
 		/**
 		 * Check whether there's an active user or not
-		 * @param  string $role Required user's role
-		 * @return boolean      True if there's an user active, false otherwise
+		 * @param  string $role   Required user's role
+		 * @param  string $reason Optional, will contain the reason why the user isn´t valid: it's either not set or its role isn't compatible
+		 * @return boolean        True if there's an user active, false otherwise
 		 */
-		function checkLogin($role = '') {
+		function checkLogin($role = '', &$reason = null) {
 			global $site;
 			$dbh = $site->getDatabase();
 			$pass_salt = $site->hashPassword('gk');
@@ -418,6 +424,9 @@
 					if ($row = $stmt->fetch()) {
 						# Check role
 						if ($role != '' && $role != $row->role) {
+							if ( func_num_args() == 2 ) {
+								$reason = 'role';
+							}
 							return false;
 						}
 						# Now check the hashed password
@@ -430,6 +439,9 @@
 			    }
 			} catch (PDOException $e) {
 				//
+			}
+			if ( func_num_args() == 2 ) {
+				$reason = 'notset';
 			}
 		    return false;
 		}

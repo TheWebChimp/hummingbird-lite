@@ -1,5 +1,6 @@
 <?php
 	$return = isset($_REQUEST['return']) ? $_REQUEST['return'] : 'home';
+	$reason = isset($_GET['reason']) ? $_GET['reason'] : false;
 
 	if ($_POST) {
 		$user = isset($_POST['user']) ? $_POST['user'] : '';
@@ -16,9 +17,17 @@
 <?php $site->getParts(array('header_html', 'header')) ?>
 
 		<section>
-			<?php if ( $gatekeeper->getCurrentUserId() ): ?>
+			<?php
+				if ( $gatekeeper->getCurrentUserId() ):
+					if ($reason == 'perm'):
+			?>
 
+			<p><strong>You are already signed in, but you don't have enough permissions to see this page.</strong></p>
+			<?php 	else: ?>
 			<p><strong>You are already signed in, <a href="<?php $site->urlTo('/logout', true) ?>">click here</a> to sign out.</strong></p>
+			<?php 	endif; ?>
+
+			<p><a href="<?php $site->urlTo('/', true); ?>">&laquo; Go back to the main page</a></p>
 
 			<?php else: ?>
 
