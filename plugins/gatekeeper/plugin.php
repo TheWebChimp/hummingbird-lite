@@ -309,11 +309,10 @@
 		 * Retrieve an user's meta
 		 * @param  integer $id      User ID
 		 * @param  string  $key     Meta key
-		 * @param  string  $value   Meta value
 		 * @param  string  $default Default value to return
 		 * @return string           Meta value
 		 */
-		function getUserMeta($id, $key, $value, $default = '') {
+		function getUserMeta($id, $key, $default = '') {
 			global $site;
 			$dbh = $site->getDatabase();
 			$sql = "SELECT meta_value FROM gk_user_meta WHERE user_id = :user_id AND meta_key = :meta_key";
