@@ -82,12 +82,12 @@
 			$this->registerScript('bootstrap3', $this->baseUrl('/js/bootstrap3.min.js') );
 			# Default dirs
 			$this->$dirs = array(
-				'plugins' => $this->base_dir . '/plugins',
-				'pages' => $this->base_dir . '/pages',
-				'parts' => $this->base_dir . '/parts',
-				'images' => $this->base_dir . '/images',
-				'scripts' => $this->base_dir . '/js',
-				'styles' => $this->base_dir . '/css'
+				'plugins' => '/plugins',
+				'pages'   => '/pages',
+				'parts'   => '/parts',
+				'images'  => '/images',
+				'scripts' => '/js',
+				'styles'  => '/css'
 			);
 			# Create database connection
 			try {
@@ -200,12 +200,13 @@
 
 		/**
 		 * Get the specified directory path
-		 * @param  string $dir Directory name
-		 * @return mixed       The full qualified path to the specified directory or False if it doesn't exist
+		 * @param  string  $dir  Directory name
+		 * @param  boolean $full Whether to return a relative or fully-qualified path
+		 * @return mixed         The path to the specified directory or False if it doesn't exist
 		 */
-		function getDir($dir) {
-			if ( isset( $this->dirs[ $dir ] ) ) {
-				return $this->dirs[ $dir ];
+		function getDir($dir, $full = true) {
+			if ( isset( $this->dirs[$dir] ) ) {
+				return ($full ? $this->baseDir( $this->dirs[$dir] ) : $this->dirs[$dir]);
 			}
 			return false;
 		}
@@ -213,10 +214,10 @@
 		/**
 		 * Set the path to the specified directory
 		 * @param string $dir  Directory name, if it exists it will be overwritten
-		 * @param string $path Full qualified path to the directory
+		 * @param string $path Path to the directory, relative to the site root
 		 */
 		function setDir($dir, $path) {
-			$this->dirs[ $dir ] = $path;
+			$this->dirs[$dir] = $path;
 		}
 
 		/**
