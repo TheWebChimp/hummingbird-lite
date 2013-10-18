@@ -511,6 +511,18 @@
 		}
 
 		/**
+		 * Get a well formed url to the specified image file and optionally echo it
+		 * @param  string  $filename Image file name (e.g. 'logo.png')
+		 * @param  boolean $echo     Whether to print out the resulting url or not
+		 * @return string            The resulting url
+		 */
+		function img($filename, $echo = true) {
+			$dir = $this->getDir('images', false);
+			$ret = $this->urlTo( sprintf('%s/%s', $dir, $filename), $echo);
+			return $ret;
+		}
+
+		/**
 		 * Add an stylesheet to the list
 		 * @param  string $name Name of the stylesheet
 		 * @param  string $url  URL to the stylesheet (absolute)
