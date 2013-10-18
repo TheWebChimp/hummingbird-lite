@@ -16,6 +16,7 @@
 		protected $base_dir;
 		protected $routes;
 		protected $default_route;
+		protected $dirs;
 		protected $actions;
 		protected $scripts;
 		protected $styles;
@@ -79,6 +80,15 @@
 			$this->registerScript('backbone', $this->baseUrl('/js/backbone.js') );
 			$this->registerScript('bootstrap', $this->baseUrl('/js/bootstrap.min.js') );
 			$this->registerScript('bootstrap3', $this->baseUrl('/js/bootstrap3.min.js') );
+			# Default dirs
+			$this->$dirs = array(
+				'plugins' => $this->base_dir . '/plugins',
+				'pages' => $this->base_dir . '/pages',
+				'parts' => $this->base_dir . '/parts',
+				'images' => $this->base_dir . '/images',
+				'scripts' => $this->base_dir . '/js',
+				'styles' => $this->base_dir . '/css'
+			);
 			# Create database connection
 			try {
 				switch ( $this->profile['db_driver'] ) {
@@ -186,6 +196,27 @@
 				echo $ret;
 			}
 			return $ret;
+		}
+
+		/**
+		 * Get the specified directory path
+		 * @param  string $dir Directory name
+		 * @return mixed       The full qualified path to the specified directory or False if it doesn't exist
+		 */
+		function getDir($dir) {
+			if ( isset( $this->dirs[ $dir ] ) ) {
+				return $this->dirs[ $dir ];
+			}
+			return false;
+		}
+
+		/**
+		 * Set the path to the specified directory
+		 * @param string $dir  Directory name, if it exists it will be overwritten
+		 * @param string $path Full qualified path to the directory
+		 */
+		function setDir($dir, $path) {
+			$this->dirs[ $dir ] = $path;
 		}
 
 		/**
