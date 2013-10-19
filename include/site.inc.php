@@ -178,14 +178,18 @@
 
 		/**
 		 * Get base URL
-		 * @param  string  $path Path to append
-		 * @param  boolean $echo Whether to print the resulting string or not
-		 * @return string        The well-formed URL
+		 * @param  string  $path     Path to append
+		 * @param  boolean $echo     Whether to print the resulting string or not
+		 * @param  string  $protocol Protocol to override default http (https, ftp, etc)
+		 * @return string            The well-formed URL
 		 */
-		function baseUrl($path = '', $echo = false) {
+		function baseUrl($path = '', $echo = false, $protocol = null) {
 			$base_url = rtrim($this->base_url, '/');
-			if ( isset($_SERVER['HTTPS']) ) {
+			if (!$protocol && isset($_SERVER['HTTPS']) ) {
 				$base_url = str_replace('http://', 'https://', $base_url);
+			} else if ($protocol) {
+				$protocol .= strrpos($protocol, ':') > 0 ? '' : ':';
+				$base_url = str_replace('http:', $protocol, $base_url);
 			}
 			if ( !empty($path) && $path[0] != '/' ) {
 				$path = '/' . $path;
@@ -483,11 +487,12 @@
 
 		/**
 		 * Redirect to given route
-		 * @param  string $route Route to redirect to
+		 * @param  string $route    Route to redirect to
+		 * @param  string $protocol Protocol to override default http (https, ftp, etc)
 		 */
-		function redirectTo($route) {
+		function redirectTo($route, $protocol = null) {
 			if ( preg_match('/^(http:\/\/|https:\/\/).*/', $route) !== 1 ) {
-				$url = $this->baseUrl($route);
+				$url = $this->baseUrl($route, false, $protocol);
 			} else {
 				$url = $route;
 			}
@@ -498,12 +503,13 @@
 
 		/**
 		 * Get a well formed url to the specified route or page slug
-		 * @param  string  $route Route or page slug
-		 * @param  boolean $echo  Whether to print out the resulting url or not
-		 * @return string         The resulting url
+		 * @param  string  $route    Route or page slug
+		 * @param  boolean $echo     Whether to print out the resulting url or not
+		 * @param  string  $protocol Protocol to override default http (https, ftp, etc)
+		 * @return string            The resulting url
 		 */
-		function urlTo($route, $echo = false) {
-			$url = $this->baseUrl($route);
+		function urlTo($route, $echo = false, $protocol = null) {
+			$url = $this->baseUrl($route, false, $protocol);
 			if ($echo) {
 				echo $url;
 			}
