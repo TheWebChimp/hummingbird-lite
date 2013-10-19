@@ -69,17 +69,17 @@
 			# Register base styles
 			$this->registerStyle('bootstrap', $this->baseUrl('/css/bootstrap.min.css') );
 			$this->registerStyle('bootstrap3', $this->baseUrl('/css/bootstrap3.min.css') );
-			$this->registerStyle('bootstrap-responsive', $this->baseUrl('/css/bootstrap-responsive.min.css') );
+			$this->registerStyle('bootstrap-responsive', $this->baseUrl('/css/bootstrap-responsive.min.css'), array('bootstrap') );
 			$this->registerStyle('magnific-popup', $this->baseUrl('/css/magnific-popup.css') );
 			# Register base scripts
 			$this->registerScript('jquery', $this->baseUrl('/js/jquery-1.9.1.min.js') );
-			$this->registerScript('jquery.form', $this->baseUrl('/js/jquery.form.js') );
-			$this->registerScript('jquery.cycle', $this->baseUrl('/js/jquery.cycle.all.js') );
-			$this->registerScript('jquery.magnific-popup', $this->baseUrl('/js/jquery.magnific-popup.min.js') );
+			$this->registerScript('jquery.form', $this->baseUrl('/js/jquery.form.js'), array('jquery') );
+			$this->registerScript('jquery.cycle', $this->baseUrl('/js/jquery.cycle.all.js'), array('jquery') );
+			$this->registerScript('jquery.magnific-popup', $this->baseUrl('/js/jquery.magnific-popup.min.js'), array('jquery') );
 			$this->registerScript('underscore', $this->baseUrl('/js/underscore.js') );
-			$this->registerScript('backbone', $this->baseUrl('/js/backbone.js') );
-			$this->registerScript('bootstrap', $this->baseUrl('/js/bootstrap.min.js') );
-			$this->registerScript('bootstrap3', $this->baseUrl('/js/bootstrap3.min.js') );
+			$this->registerScript('backbone', $this->baseUrl('/js/backbone.js'), array('underscore') );
+			$this->registerScript('bootstrap', $this->baseUrl('/js/bootstrap.min.js'), array('jquery') );
+			$this->registerScript('bootstrap3', $this->baseUrl('/js/bootstrap3.min.js'), array('jquery') );
 			# Default dirs
 			$this->dirs = array(
 				'plugins' => '/plugins',
@@ -530,20 +530,28 @@
 
 		/**
 		 * Add an stylesheet to the list
-		 * @param  string $name Name of the stylesheet
-		 * @param  string $url  URL to the stylesheet (absolute)
+		 * @param  string $name      Name of the stylesheet
+		 * @param  string $url       URL to the stylesheet (absolute)
+		 * @param  array  $requires  Array of stylesheets this stylesheet depends on (they'll be automatically added to the page)
 		 */
-		function registerStyle($name, $url) {
-			$this->styles[$name] = $url;
+		function registerStyle($name, $url, $requires = array()) {
+			$this->styles[$name] = array(
+				'resource' => $url,
+				'requires' => $requires
+			);
 		}
 
 		/**
 		 * Add an script to the list
-		 * @param  string $name Name of the script
-		 * @param  string $url  URL to the script (absolute)
+		 * @param  string $name      Name of the script
+		 * @param  string $url       URL to the script (absolute)
+		 * @param  array  $requires  Array of scripts this script depends on (they'll be automatically added to the page)
 		 */
-		function registerScript($name, $url) {
-			$this->scripts[$name] = $url;
+		function registerScript($name, $url, $requires = array()) {
+			$this->scripts[$name] = array(
+				'resource' => $url,
+				'requires' => $requires
+			);
 		}
 
 		/**
@@ -551,7 +559,15 @@
 		 * @param  string $name Name of the stylesheet
 		 */
 		function enqueueStyle($name) {
-			$this->enqueued_styles[] = $name;
+			if ( isset( $this->styles[$name] ) ) {
+				if (! isset($this->enqueued_styles[$name]) ) {
+					$item = $this->styles[$name];
+					foreach ($item['requires'] as $dep) {
+						$this->enqueueStyle($dep);
+					}
+					$this->enqueued_styles[$name] = $name;
+				}
+			}
 		}
 
 		/**
@@ -559,7 +575,15 @@
 		 * @param  string $name 	Name of the script
 		 */
 		function enqueueScript($name) {
-			$this->enqueued_scripts[] = $name;
+			if ( isset( $this->scripts[$name] ) ) {
+				if (! isset($this->enqueued_scripts[$name]) ) {
+					$item = $this->scripts[$name];
+					foreach ($item['requires'] as $dep) {
+						$this->enqueueScript($dep);
+					}
+					$this->enqueued_scripts[$name] = $name;
+				}
+			}
 		}
 
 		/**
@@ -568,7 +592,8 @@
 		 */
 		function includeStyle($style) {
 			if ( isset( $this->styles[$style] ) ) {
-				$output = sprintf('<link rel="stylesheet" type="text/css" href="%s">', $this->styles[$style]);
+				$item = $this->styles[$style];
+				$output = sprintf('<link rel="stylesheet" type="text/css" href="%s">', $item['resource']);
 				echo($output."\n");
 			}
 		}
@@ -579,7 +604,8 @@
 		 */
 		function includeScript($script) {
 			if ( isset( $this->scripts[$script] ) ) {
-				$output = sprintf('<script type="text/javascript" src="%s"></script>', $this->scripts[$script]);
+				$item = $this->scripts[$script];
+				$output = sprintf('<script type="text/javascript" src="%s"></script>', $item['resource']);
 				echo($output."\n");
 			}
 		}

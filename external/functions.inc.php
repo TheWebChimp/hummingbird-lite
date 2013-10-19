@@ -13,8 +13,7 @@
 	$site->enqueueStyle('sticky-footer');
 
 	# Include scripts
-	$site->registerScript('script', $site->baseUrl('/js/script.js') );
-	$site->enqueueScript('jquery');
+	$site->registerScript('script', $site->baseUrl('/js/script.js'), array('jquery') );
 	$site->enqueueScript('script');
 
 	# Include extra files
