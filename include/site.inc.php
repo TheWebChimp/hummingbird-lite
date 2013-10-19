@@ -72,6 +72,7 @@
 			$this->registerStyle('bootstrap-responsive', $this->baseUrl('/css/bootstrap-responsive.min.css'), array('bootstrap') );
 			$this->registerStyle('magnific-popup', $this->baseUrl('/css/magnific-popup.css') );
 			# Register base scripts
+			$this->registerScript('modernizr', $this->baseUrl('/js/modernizr-2.6.2.min.js') );
 			$this->registerScript('jquery', $this->baseUrl('/js/jquery-1.9.1.min.js') );
 			$this->registerScript('jquery.form', $this->baseUrl('/js/jquery.form.js'), array('jquery') );
 			$this->registerScript('jquery.cycle', $this->baseUrl('/js/jquery.cycle.all.js'), array('jquery') );
