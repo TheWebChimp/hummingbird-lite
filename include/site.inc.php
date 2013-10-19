@@ -644,6 +644,14 @@
 		}
 
 		/**
+		 * Check if the current request was made via HTTPS
+		 * @return boolean Whether the request was made via HTTPS or not
+		 */
+		function isSecureRequest() {
+			return ( isset( $_SERVER['HTTPS'] ) );
+		}
+
+		/**
 		 * Add a new AJAX action and register its handler function
 		 * @param string $action    Action slug
 		 * @param string $functName Callback function name
