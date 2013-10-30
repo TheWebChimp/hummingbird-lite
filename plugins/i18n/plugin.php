@@ -154,7 +154,7 @@
 				}
 				$ret = sprintf('<select%s>', $attr_text);
 				foreach ($options as $option => $name) {
-					$ret .= '<option '.($sel !== false && $option == $sel ? 'selected="selected"' : '').'value="'.$option.'">'.$name.'</option>';
+					$ret .= '<option '.($sel !== false && $option == $sel ? 'selected="selected" ' : '').'value="'.$option.'">'.$name.'</option>';
 				}
 				$ret .= '</select>';
 			} else {
