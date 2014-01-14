@@ -17,12 +17,26 @@ br.clear{
 
 header,
 footer,
-section,
-#content{
+section {
+
+	display: block;
+	position: relative;
+}
+
+.inner {
 
 	width: 1000px;
 	margin: 0 auto;
 }
+
+.no-text {
+
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.hide 			{ display: none; }
 
 div 			{ position: relative; }
 
