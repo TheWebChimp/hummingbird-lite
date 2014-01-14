@@ -1,4 +1,4 @@
-<?php $site->getParts(array('header_html', 'header')) ?>
+<?php $site->getParts(array('sticky-footer/header_html', 'sticky-footer/header')) ?>
 
 		<section>
 			<div class="inner">
@@ -7,4 +7,4 @@
 			</div>
 		</section>
 
-<?php $site->getParts(array('footer', 'footer_html')) ?>
+<?php $site->getParts(array('sticky-footer/footer', 'sticky-footer/footer_html')) ?>
