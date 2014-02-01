@@ -25,6 +25,7 @@
 		protected $page;
 		protected $pages;
 		protected $plugins;
+		protected $metas;
 		protected $site_title;
 		protected $page_title;
 		protected $pass_salt;
@@ -54,6 +55,7 @@
 			$this->params = array();
 			$this->pages = array();
 			$this->hooks = array();
+			$this->metas = array();
 			$this->plugins = $this->profile['plugins'];
 			# Add routes
 			$this->addRoute('/ajax', 'Site::ajaxRequest');
@@ -817,6 +819,42 @@
 		 */
 		function getDatabase() {
 			return $this->dbh;
+		}
+
+		/**
+		 * Add a meta tag to the site
+		 * @param string $name      Meta name
+		 * @param string $content   Meta content (optional)
+		 * @param string $attribute Attribute to use for 'name' (charset, etc)
+		 */
+		function addMeta($name, $content = '', $attribute = 'name') {
+			$this->metas[$name] = array(
+				'name' => $name,
+				'content' => $content,
+				'attribute' => $attribute
+			);
+		}
+
+		/**
+		 * Remove a meta tag from the site
+		 * @param  string $name Meta name
+		 * @return nothing
+		 */
+		function removeMeta($name) {
+			unset( $this->metas[$name] );
+		}
+
+		/**
+		 * Print the meta tags added to the site
+		 * @return nothing
+		 */
+		function metaTags() {
+			foreach ($this->metas as $meta) {
+				echo( $meta['content'] ?
+						"<meta {$meta['attribute']}=\"{$meta['name']}\" content=\"{$meta['content']}\">\n" :
+						"<meta {$meta['attribute']}=\"{$meta['name']}\">\n"
+					);
+			}
 		}
 
 		/**

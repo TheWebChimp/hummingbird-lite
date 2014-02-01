@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
+	<?php $site->metaTags(); ?>
 	<title><?php echo $site->getPageTitle() ?></title>
 	<link rel="shortcut icon" href="<?php $site->urlTo('/favicon.ico', true) ?>">
 	<script type="text/javascript">

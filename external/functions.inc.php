@@ -20,6 +20,16 @@
 	include ABSPATH . '/external/utilities.inc.php';
 	include ABSPATH . '/external/ajax.inc.php';
 
+	# Meta tags
+	$site->addMeta('UTF-8', '', 'charset');
+	$site->addMeta('viewport', 'width=device-width, initial-scale=1');
+
+	$site->addMeta('og:title', $site->getPageTitle(), 'property');
+	$site->addMeta('og:site_name', $site->getSiteTitle(), 'property');
+	$site->addMeta('og:image', $site->urlTo('/favicon.png'), 'property');
+	$site->addMeta('og:type', 'website', 'property');
+	$site->addMeta('og:url', $site->urlTo('/'), 'property');
+
 	# Localization
 	if ( isset($i18n) ) {
 		$i18n->addLocale('en', ABSPATH . '/plugins/i18n/lang/enUS.php');
