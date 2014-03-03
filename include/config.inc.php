@@ -16,7 +16,7 @@
 			# Global settings
 			'site_url' => 'http://localhost/hummingbird-lite/',
 			# Database settings
-			'db_driver' => 'sqlite', 		# none, sqlite or mysql
+			'db_driver' => 'sqlite', # none, sqlite or mysql
 			'db_host' => 'localhost',
 			'db_user' => 'root',
 			'db_pass' => '',
@@ -25,7 +25,22 @@
 			# Plugins
 			'plugins' => array(
 				'gatekeeper',
-				'cms',
+				'i18n'
+			)
+		),
+		'testing' => array(
+			# Global settings
+			'site_url' => 'http://dev.yoursite.com',
+			# Database settings
+			'db_driver' => 'none',
+			'db_host' => '',
+			'db_user' => '',
+			'db_pass' => '',
+			'db_name' => '',
+			'db_file' => ABSPATH . '/include/schema.sqlite',
+			# Plugins
+			'plugins' => array(
+				'gatekeeper',
 				'i18n'
 			)
 		),
@@ -42,7 +57,6 @@
 			# Plugins
 			'plugins' => array(
 				'gatekeeper',
-				'cms',
 				'i18n'
 			)
 		),
