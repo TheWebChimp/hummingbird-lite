@@ -17,12 +17,12 @@
 
 	# Initialize plugins
 	foreach ($site->getPlugins() as $plugin) {
-		$file = sprintf('%s/plugins/%s/plugin.php', ABSPATH, $plugin);
+		$file = $site->baseDir("/plugins/{$plugin}/plugin.php");
 		include $file;
 	}
 
 	# External functions
-	include ABSPATH . '/external/functions.inc.php';
+	include $site->baseDir('/external/functions.inc.php');
 
 	# Do routing
 	$site->routeRequest();
