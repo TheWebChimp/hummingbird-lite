@@ -30,6 +30,9 @@
 	$site->addMeta('og:type', 'website', 'property');
 	$site->addMeta('og:url', $site->urlTo('/'), 'property');
 
+	# Pages
+	// $site->addPage('sample', 'sample-page');
+
 	# Localization
 	if ( isset($i18n) ) {
 		$i18n->addLocale('en', ABSPATH . '/plugins/i18n/lang/enUS.php');
