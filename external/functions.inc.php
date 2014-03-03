@@ -17,8 +17,8 @@
 	$site->enqueueScript('script');
 
 	# Include extra files
-	include ABSPATH . '/external/utilities.inc.php';
-	include ABSPATH . '/external/ajax.inc.php';
+	include $site->baseDir('/external/utilities.inc.php');
+	include $site->baseDir('/external/ajax.inc.php');
 
 	# Meta tags
 	$site->addMeta('UTF-8', '', 'charset');
@@ -35,8 +35,8 @@
 
 	# Localization
 	if ( isset($i18n) ) {
-		$i18n->addLocale('en', ABSPATH . '/plugins/i18n/lang/enUS.php');
-		$i18n->addLocale('es', ABSPATH . '/plugins/i18n/lang/esMX.php');
+		$i18n->addLocale('en', $site->baseDir('/plugins/i18n/lang/enUS.php'));
+		$i18n->addLocale('es', $site->baseDir('/plugins/i18n/lang/esMX.php'));
 		$i18n->setLocale('en');
 	}
 
