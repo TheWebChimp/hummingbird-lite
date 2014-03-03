@@ -4,7 +4,7 @@
 		<footer class="boxfix-vert">
 			<div class="inner">
 				<hr>
-				<p>Copyright © 2013</p>
+				<p>Copyright &copy; <?php echo date('Y'); ?></p>
 			</div>
 		</footer>
 	</div>
