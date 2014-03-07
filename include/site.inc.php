@@ -81,7 +81,6 @@
 			$this->registerScript('jquery.magnific-popup', $this->baseUrl('/js/jquery.magnific-popup.min.js'), array('jquery') );
 			$this->registerScript('underscore', $this->baseUrl('/js/underscore.js') );
 			$this->registerScript('backbone', $this->baseUrl('/js/backbone.js'), array('underscore') );
-			$this->registerScript('bootstrap', $this->baseUrl('/js/bootstrap.min.js'), array('jquery') );
 			$this->registerScript('bootstrap3', $this->baseUrl('/js/bootstrap3.min.js'), array('jquery') );
 			# Default dirs
 			$this->dirs = array(
