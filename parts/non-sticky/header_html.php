@@ -15,4 +15,3 @@
 	<?php $site->includeScript('modernizr'); ?>
 </head>
 <body class="<?php $site->bodyClass() ?>">
-	<div class="container" id="main">
