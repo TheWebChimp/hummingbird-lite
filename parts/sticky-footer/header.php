@@ -1,5 +1,5 @@
 	<div class="wrapper">
-		<header class="boxfix-vert">
+		<header>
 			<div class="inner">
 				<!--  -->
 			</div>
