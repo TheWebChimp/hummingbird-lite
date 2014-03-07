@@ -1,2 +1,20 @@
-@import url('reset.css');
-@import url('structure.css');
+/**
+ * style.css
+ */
+
+body {
+
+	background: #FFF;
+}
+
+a {
+
+	text-decoration: none;
+	color: #428BCA;
+}
+
+a:hover {
+
+	text-decoration: underline;
+	color: #2A6496;
+}
