@@ -75,3 +75,28 @@ div 			{ position: relative; }
 .column-half	{ width: 50%; }
 .column-third	{ width: 33%; }
 .column-fourth	{ width: 25%; }
+
+.alignleft {
+
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.alignright {
+
+	float: right;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+.aligncenter {
+
+	display: block;
+	margin: 10px auto;
+}
+
+.alignnone {
+
+	float: none;
+}
