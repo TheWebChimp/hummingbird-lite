@@ -27,6 +27,7 @@
 
 	$site->addMeta('og:title', $site->getPageTitle(), 'property');
 	$site->addMeta('og:site_name', $site->getSiteTitle(), 'property');
+	$site->addMeta('og:description', $site->getSiteTitle(), 'property');
 	$site->addMeta('og:image', $site->urlTo('/favicon.png'), 'property');
 	$site->addMeta('og:type', 'website', 'property');
 	$site->addMeta('og:url', $site->urlTo('/'), 'property');
