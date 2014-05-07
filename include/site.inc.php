@@ -69,19 +69,17 @@
 			$this->site_title = $settings['shared']['site_name'];
 			$this->page_title = $this->site_title;
 			# Register base styles
-			$this->registerStyle('bootstrap', $this->baseUrl('/css/bootstrap.min.css') );
-			$this->registerStyle('bootstrap3', $this->baseUrl('/css/bootstrap3.min.css') );
-			$this->registerStyle('bootstrap-responsive', $this->baseUrl('/css/bootstrap-responsive.min.css'), array('bootstrap') );
-			$this->registerStyle('magnific-popup', $this->baseUrl('/css/magnific-popup.css') );
+			$this->registerStyle('twitter-bootstrap', '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css');
+			$this->registerStyle('magnific-popup', '//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/0.9.9/magnific-popup.css');
 			# Register base scripts
-			$this->registerScript('modernizr', $this->baseUrl('/js/modernizr-2.6.2.min.js') );
-			$this->registerScript('jquery', $this->baseUrl('/js/jquery-1.9.1.min.js') );
-			$this->registerScript('jquery.form', $this->baseUrl('/js/jquery.form.js'), array('jquery') );
-			$this->registerScript('jquery.cycle', $this->baseUrl('/js/jquery.cycle.all.js'), array('jquery') );
-			$this->registerScript('jquery.magnific-popup', $this->baseUrl('/js/jquery.magnific-popup.min.js'), array('jquery') );
-			$this->registerScript('underscore', $this->baseUrl('/js/underscore.js') );
-			$this->registerScript('backbone', $this->baseUrl('/js/backbone.js'), array('underscore') );
-			$this->registerScript('bootstrap3', $this->baseUrl('/js/bootstrap3.min.js'), array('jquery') );
+			$this->registerScript('modernizr', '//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.1/modernizr.min.js');
+			$this->registerScript('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js');
+			$this->registerScript('jquery.form', '//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.49/jquery.form.min.js', array('jquery'));
+			$this->registerScript('jquery.cycle', '//cdnjs.cloudflare.com/ajax/libs/jquery.cycle/3.03/jquery.cycle.all.min.js', array('jquery'));
+			$this->registerScript('magnific-popup', '//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/0.9.9/jquery.magnific-popup.min.js', array('jquery'));
+			$this->registerScript('twitter-bootstrap', '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js', array('jquery'));
+			$this->registerScript('underscore', '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js', array('underscore'));
+			$this->registerScript('backbone', '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js');
 			# Default dirs
 			$this->dirs = array(
 				'plugins' => '/plugins',
