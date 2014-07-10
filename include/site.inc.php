@@ -579,16 +579,18 @@
 		 */
 		function includeScriptVars() {
 			$vars = '';
-			foreach ($this->script_vars as $var => $value) {
-				if ( is_array($value) || is_object($value) ) {
-					$value = json_encode($value);
-				} elseif (! is_numeric($value) ) {
-					$value = "'{$value}'";
+			if ($this->script_vars) {
+				foreach ($this->script_vars as $var => $value) {
+					if ( is_array($value) || is_object($value) ) {
+						$value = json_encode($value);
+					} elseif (! is_numeric($value) ) {
+						$value = "'{$value}'";
+					}
+					$vars .= "var {$var} = {$value};\n";
 				}
-				$vars .= "var {$var} = {$value};\n";
+				$output = sprintf("<script type=\"text/javascript\">\n%s</script>", $vars);
+				echo($output."\n");
 			}
-			$output = sprintf("<script type=\"text/javascript\">\n%s</script>", $vars);
-			echo($output."\n");
 		}
 
 		/**
