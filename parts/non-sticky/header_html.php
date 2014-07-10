@@ -13,5 +13,6 @@
 	</script>
 	<?php $site->includeStyles() ?>
 	<?php $site->includeScript('modernizr'); ?>
+	<?php $site->includeScriptVars(); ?>
 </head>
 <body class="<?php $site->bodyClass() ?>">

@@ -16,6 +16,7 @@
 		protected $base_dir;
 		protected $routes;
 		protected $default_route;
+		protected $script_vars;
 		protected $dirs;
 		protected $actions;
 		protected $scripts;
@@ -552,6 +553,10 @@
 				'resource' => $url,
 				'requires' => $requires
 			);
+		}
+
+		function addScriptVar($var, $value) {
+			$this->script_vars[$var] => $value;
 		}
 
 		/**
