@@ -555,8 +555,40 @@
 			);
 		}
 
+		/**
+		 * Add an script variable
+		 * @param string $var   Variable name
+		 * @param mixed  $value Variable value
+		 */
 		function addScriptVar($var, $value) {
-			$this->script_vars[$var] => $value;
+			$this->script_vars[$var] = $value;
+		}
+
+		/**
+		 * Remove an script variable
+		 * @param  string $var Variable name
+		 * @return nothing
+		 */
+		function removeScriptVar($var) {
+			unset( $this->script_vars[$var] );
+		}
+
+		/**
+		 * Print the registered script variables
+		 * @return nothing
+		 */
+		function includeScriptVars() {
+			$vars = '';
+			foreach ($this->script_vars as $var => $value) {
+				if ( is_array($value) || is_object($value) ) {
+					$value = json_encode($value);
+				} elseif (! is_numeric($value) ) {
+					$value = "'{$value}'";
+				}
+				$vars .= "var {$var} = {$value};\n";
+			}
+			$output = sprintf("<script type=\"text/javascript\">\n%s</script>", $vars);
+			echo($output."\n");
 		}
 
 		/**
