@@ -294,7 +294,7 @@
 			$request = ltrim($request, '/');
 
 			# Save current request string
-			$site->request = $request;
+			$this->request = $request;
 
 			# Get the parameters
 			$segments = explode('?', $request);
