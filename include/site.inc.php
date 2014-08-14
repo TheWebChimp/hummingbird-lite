@@ -22,6 +22,7 @@
 		protected $scripts;
 		protected $styles;
 		protected $slugs;
+		protected $request;
 		protected $params;
 		protected $page;
 		protected $pages;
@@ -292,6 +293,9 @@
 			$request = preg_replace("/".str_replace('/', '\/', $domain)."/", '', $request, 1);
 			$request = ltrim($request, '/');
 
+			# Save current request string
+			$site->request = $request;
+
 			# Get the parameters
 			$segments = explode('?', $request);
 			if (count($segments) > 1) {
@@ -427,6 +431,15 @@
 		 */
 		function getCurPage() {
 			return $this->page;
+		}
+
+
+		/**
+		 * Get the current request string
+		 * @return string The current request string
+		 */
+		function getCurRequest() {
+			return $this->request;
 		}
 
 		/**
