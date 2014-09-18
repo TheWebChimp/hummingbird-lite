@@ -3,12 +3,8 @@
 	 * site.inc.php
 	 * This class is the core of Hummingbird, so please try to keep it backwards-compatible if you modify it.
 	 *
-	 * Version: 	2.0
+	 * Version: 	2.0.1
 	 * Author(s):	biohzrdmx <github.com/biohzrdmx>
-	 * ToDo:		Improve hook engine
-	 * 				Improve tokens (make them more nonce-like)
-	 * 				Improve routing (per-route priority would be great)
-	 * 				Include more scripts (jquery-ui, jquery.validator2, jquery.loader2, etc)
 	 */
 
 	class Site {
@@ -95,7 +91,7 @@
 			try {
 				switch ( $this->profile['db_driver'] ) {
 					case 'sqlite':
-						$dsn = sprintf('sqlite:%s', $this->profile['db_file']);
+						$dsn = sprintf('sqlite:%s', $includeStyle->profile['db_file']);
 						$this->dbh = new PDO($dsn);
 						break;
 					case 'mysql':
@@ -607,8 +603,8 @@
 		}
 
 		/**
-		 * Output a well-formed stylesheet link tag to the specified stylesheet
-		 * @param  string $name Name of the stylesheet
+		 * Add a previously registered stylesheet to the inclusion queue
+		 * @param  string $name Name of the registered stylesheet
 		 */
 		function enqueueStyle($name) {
 			if ( isset( $this->styles[$name] ) ) {
@@ -623,8 +619,8 @@
 		}
 
 		/**
-		 * Output a well-formed script tag to the specified script
-		 * @param  string $name 	Name of the script
+		 * Add a previously registered script to the inclusion queue
+		 * @param  string $name 	Name of the registered script
 		 */
 		function enqueueScript($name) {
 			if ( isset( $this->scripts[$name] ) ) {
@@ -634,6 +630,44 @@
 						$this->enqueueScript($dep);
 					}
 					$this->enqueued_scripts[$name] = $name;
+				}
+			}
+		}
+
+		/**
+		 * Remove a previously enqueued stylesheet from the inclusion queue
+		 * @param string $name  Name of the enqueued stylesheet
+		 * @param boolean $dependencies Dequeue dependencies too (not recommended)
+		 */
+		function dequeueStyle($name, $dependencies = false) {
+			if ( isset( $this->styles[$name] ) ) {
+				if ( isset($this->enqueued_styles[$name]) ) {
+					$item = $this->styles[$name];
+					if ($dependencies) {
+						foreach ($item['requires'] as $dep) {
+							$this->dequeueStyle($dep);
+						}
+					}
+					unset( $this->enqueued_styles[$name] );
+				}
+			}
+		}
+
+		/**
+		 * Remove a previously enqueued script from the inclusion queue
+		 * @param string $name  Name of the enqueued script
+		 * @param boolean $dependencies Dequeue dependencies too (not recommended)
+		 */
+		function dequeueScript($name, $dependencies = false) {
+			if ( isset( $this->scripts[$name] ) ) {
+				if ( isset($this->enqueued_scripts[$name]) ) {
+					$item = $this->scripts[$name];
+					if ($dependencies) {
+						foreach ($item['requires'] as $dep) {
+							$this->dequeueScript($dep);
+						}
+					}
+					unset( $this->enqueued_scripts[$name] );
 				}
 			}
 		}
