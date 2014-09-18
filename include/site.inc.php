@@ -91,7 +91,7 @@
 			try {
 				switch ( $this->profile['db_driver'] ) {
 					case 'sqlite':
-						$dsn = sprintf('sqlite:%s', $includeStyle->profile['db_file']);
+						$dsn = sprintf('sqlite:%s', $this->profile['db_file']);
 						$this->dbh = new PDO($dsn);
 						break;
 					case 'mysql':
