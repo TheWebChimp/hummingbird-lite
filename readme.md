@@ -3,7 +3,7 @@ Hummingbird Lite
 
 Lightweight, extensible web framework.
 
-**Current version:** 2.0
+**Current version:** 2.0.1 (September 18, 2014)
 
 ### Requirements ###
 
@@ -45,7 +45,7 @@ Pay special attention to the `site_url` parameter: the default .htaccess strips 
 **Lead coder:** biohzrdmx [&lt;github.com/biohzrdmx&gt;](http://github.com/biohzrdmx)
 
 ## License ##
-Copyright &copy; 2013 biohzrdmx
+Copyright &copy; 2014 biohzrdmx
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
