@@ -4,7 +4,7 @@
 	 * Add extra functions in this file
 	 */
 
-	# Basic set-up ------------------------------------------------------------
+	# Basic set-up ---------------------------------------------------------------------------------
 
 	# Include styles
 	$site->registerStyle('reset', $site->baseUrl('/css/reset.css') );

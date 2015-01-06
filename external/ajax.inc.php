@@ -4,7 +4,7 @@
 	 * Add your AJAX actions here
 	 */
 
-	# Sample AJAX action ------------------------------------------------------
+	# Sample AJAX action ---------------------------------------------------------------------------
 	function ajax_test() {
 		echo '<pre>'.print_r($_REQUEST, true).'</pre>';
 		exit;
