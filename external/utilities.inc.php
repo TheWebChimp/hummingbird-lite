@@ -64,4 +64,22 @@
 		return $ret;
 	}
 
+	/**
+	 * Log something to file
+	 * @param  mixed  $data     What to log
+	 * @param  string $log_file Log name, without extension
+	 * @return nothing
+	 */
+	function log_to_file($data, $log_file = '') {
+		global $site;
+		$log_file = $log_file ? $log_file : date('Y-m');
+		$file = fopen( $site->baseDir("/log/{$log_file}.log"), 'a');
+		$date = date('Y-m-d H:i:s');
+		if ( is_array($data) || is_object($data) ) {
+			$data = json_encode($data);
+		}
+		fwrite($file, "{$date} - {$data}\n");
+		fclose($file);
+	}
+
 ?>
