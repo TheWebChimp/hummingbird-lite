@@ -3,8 +3,8 @@
 <head>
 	<?php $site->metaTags(); ?>
 	<title><?php echo $site->getPageTitle() ?></title>
-	<link rel="shortcut icon" href="<?php $site->urlTo('/favicon.ico', true) ?>">
-	<link rel="icon" href="<?php $site->urlTo('/favicon.png', true) ?>" type="image/png">
+	<link rel="shortcut icon" href="<?php $site->img('favicon.ico') ?>">
+	<link rel="icon" href="<?php $site->img('favicon.png') ?>" type="image/png">
 	<script type="text/javascript">
 		var constants = {
 			siteUrl: '<?php $site->urlTo("", true) ?>',
