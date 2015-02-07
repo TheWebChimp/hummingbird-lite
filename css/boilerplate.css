@@ -28,13 +28,13 @@ textarea {
 
 	/* box-sizing */
 	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 
 	/* background-clip */
-	-moz-background-clip: padding-box !important;
 	-webkit-background-clip: padding-box !important;
-	background-clip: padding-box !important;
+	   -moz-background-clip: padding-box !important;
+	        background-clip: padding-box !important;
 }
 
 @media screen and (min-width: 1000px) {
@@ -130,7 +130,7 @@ textarea {
 	background: #DDD;
 	text-align: center;
 	color: #666;
-	border: 1px solid #CCCCCC;
+	border: 1px solid #CCC;
 }
 
 .row.shaded .col span {
@@ -184,11 +184,10 @@ pre {
 	background: #F1F1F1;
 	color: #888;
 	white-space: pre-wrap;
-
 	/* border-radius */
 	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
+	   -moz-border-radius: 4px;
+	        border-radius: 4px;
 }
 
 code {
@@ -198,11 +197,10 @@ code {
 	padding: 2px 4px;
 	background: #F1F1F1;
 	color: #888;
-
 	/* border-radius */
 	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
+	   -moz-border-radius: 4px;
+	        border-radius: 4px;
 }
 
 button {
@@ -213,7 +211,10 @@ button {
 
 .button {
 
-	-moz-user-select: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
 	background-image: none;
 	cursor: pointer;
 	font-weight: 400;
@@ -234,12 +235,12 @@ button {
 	*zoom: 1;
 	/* box-sizing */
 	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 	/* border-radius */
 	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
+	   -moz-border-radius: 4px;
+	        border-radius: 4px;
 }
 
 .button:hover {
@@ -276,8 +277,8 @@ a.button {
 	padding: 8px;
 	/* border-radius */
 	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
+	   -moz-border-radius: 4px;
+	        border-radius: 4px;
 }
 
 .form-group .input-block {
@@ -286,8 +287,8 @@ a.button {
 	display: block;
 	/* box-sizing */
 	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
 .form-group .checkbox {
@@ -325,22 +326,22 @@ a.button {
 	color: #C00;
 }
 
-.form-group.has_error .control-label,
-.form-group.has_error .form-control,
-.form-group.has_error .feedback-block {
+.form-group.has-error .control-label,
+.form-group.has-error .form-control,
+.form-group.has-error .feedback-block {
 
 	color: #C00;
 }
 
-.form-group.has_success .control-label,
-.form-group.has_success .form-control,
-.form-group.has_success .feedback-block {
+.form-group.has-success .control-label,
+.form-group.has-success .form-control,
+.form-group.has-success .feedback-block {
 
 	color: #437F1A;
 }
 
-.form-group.has_error .form-control     { border-color: #C00;    }
-.form-group.has_success .form-control   { border-color: #437F1A; }
+.form-group.has-error .form-control     { border-color: #C00;    }
+.form-group.has-success .form-control   { border-color: #437F1A; }
 
 table {
 
@@ -362,7 +363,6 @@ table.table td {
 table.table thead tr th,
 table.table tfoot tr th {
 
-	/*background: #EEE;*/
 	color: #555;
 	text-align: left;
 }
@@ -477,8 +477,8 @@ table.table.table-striped tbody tr:nth-child(even):hover td {
 
 	/* border-radius */
 	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+	   -moz-border-radius: 5px;
+	        border-radius: 5px;
 }
 
 .img-thumbnail {
@@ -492,16 +492,16 @@ table.table.table-striped tbody tr:nth-child(even):hover td {
 
 	/* border-radius */
 	-webkit-border-radius: 100%;
-	-moz-border-radius: 100%;
-	border-radius: 100%;
+	   -moz-border-radius: 100%;
+	        border-radius: 100%;
 }
 
 .img-shadow {
 
 	/* box-shadow */
 	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.35);
-	-moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.35);
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.35);
+	   -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.35);
+	        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.35);
 }
 
 .img-responsive {
@@ -531,8 +531,8 @@ table.table.table-striped tbody tr:nth-child(even):hover td {
 	text-decoration: none;
 	/* border-radius */
 	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
+	   -moz-border-radius: 4px;
+	        border-radius: 4px;
 }
 
 .tabs li a:hover {
