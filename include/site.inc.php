@@ -128,6 +128,13 @@
 			}
 			$slug = ltrim( rtrim($slug, '/'), '/' );
 			$template = isset($site->pages[$slug]) && $whitelist ? $site->pages[$slug] : $slug;
+
+			#Check if redirect
+			if(preg_match( '#((https?|ftp)://(\S*?\.\S*?))([\s)\[\]{},;"\':<]|\.\s|$)#i', $template ) === 1 ){
+				$site->redirectTo($template, null, '302');
+				exit();
+			}
+
 			$page = sprintf('%s/%s.php', $templates_dir, $template);
 			if ( (!isset($site->pages[$slug]) && $whitelist ) || !file_exists($page) ) {
 				# The page does not exist
@@ -500,14 +507,14 @@
 		 * @param  string $route    Route to redirect to
 		 * @param  string $protocol Protocol to override default http (https, ftp, etc)
 		 */
-		function redirectTo($route, $protocol = null) {
+		function redirectTo($route, $protocol = null, $http_response_code = '') {
 			if ( preg_match('/^(http:\/\/|https:\/\/).*/', $route) !== 1 ) {
 				$url = $this->baseUrl($route, false, $protocol);
 			} else {
 				$url = $route;
 			}
 			$header = sprintf('Location: %s', $url);
-			header($header);
+			header($header, true, $http_response_code);
 			exit;
 		}
 
