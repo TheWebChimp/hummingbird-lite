@@ -34,17 +34,4 @@
 
 	# Pages
 	// $site->addPage('sample', 'sample-page');
-
-	# Localization
-	if ( isset($i18n) ) {
-		$i18n->addLocale('en', $site->baseDir('/plugins/i18n/lang/enUS.php'));
-		$i18n->addLocale('es', $site->baseDir('/plugins/i18n/lang/esMX.php'));
-		$i18n->setLocale('en');
-	}
-
-	# Access control
-	if ( isset($gatekeeper) ) {
-		$gatekeeper->checkLogin();
-	}
-
 ?>
