@@ -23,10 +23,7 @@
 			'db_name' => '',
 			'db_file' => ABSPATH . '/include/schema.sqlite',
 			# Plugins
-			'plugins' => array(
-				'gatekeeper',
-				'i18n'
-			)
+			'plugins' => array()
 		),
 		'testing' => array(
 			# Global settings
@@ -39,10 +36,7 @@
 			'db_name' => '',
 			'db_file' => ABSPATH . '/include/schema.sqlite',
 			# Plugins
-			'plugins' => array(
-				'gatekeeper',
-				'i18n'
-			)
+			'plugins' => array()
 		),
 		'production' => array(
 			# Global settings
@@ -55,10 +49,7 @@
 			'db_name' => '',
 			'db_file' => ABSPATH . '/include/schema.sqlite',
 			# Plugins
-			'plugins' => array(
-				'gatekeeper',
-				'i18n'
-			)
+			'plugins' => array()
 		),
 		'shared' => array(
 			# General
