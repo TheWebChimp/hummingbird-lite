@@ -6,15 +6,35 @@
 
 	# Basic set-up ---------------------------------------------------------------------------------
 
-	# Include styles
+	# Include styles -------------------------------------------------------------------------------
+
+	# Structure
 	$site->registerStyle('reset', $site->baseUrl('/css/reset.css') );
 	$site->registerStyle('structure', $site->baseUrl('/css/structure.css') );
 	$site->registerStyle('sticky-footer', $site->baseUrl('/css/sticky-footer.css') );
-	$site->registerStyle('style', $site->baseUrl('/css/style.css'), array('reset', 'structure', 'sticky-footer') );
-	$site->enqueueStyle('style');
+	$site->registerStyle('mobile', $site->baseUrl('/css/mobile.css') );
 
-	# Include scripts
-	$site->registerScript('script', $site->baseUrl('/js/script.js'), array('jquery') );
+	# Fonts
+	$site->registerStyle('google.open-sans', '//fonts.googleapis.com/css?family=Open+Sans:400,300,700,800,800italic,400italic,300italic|Open+Sans+Condensed:300,700,300italic');
+
+	$site->registerStyle('desktop', $site->baseUrl('/css/desktop.css'), array(
+
+		# Structure
+		'reset',
+		'structure',
+		'sticky-footer',
+		'mobile',
+
+		# Fonts
+		'google.open-sans'
+	));
+	$site->enqueueStyle('desktop');
+
+	# Include scripts ------------------------------------------------------------------------------
+
+	$site->registerScript('script', $site->baseUrl('/js/script.js'), array(
+		'jquery'
+	));
 	$site->enqueueScript('script');
 
 	# Include extra files
@@ -32,6 +52,6 @@
 	$site->addMeta('og:type', 'website', 'property');
 	$site->addMeta('og:url', $site->urlTo('/'), 'property');
 
-	# Pages
+	# Pages ----------------------------------------------------------------------------------------
 	// $site->addPage('sample', 'sample-page');
 ?>
