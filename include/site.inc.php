@@ -90,6 +90,9 @@
 			# Create database connection
 			try {
 				switch ( $this->profile['db_driver'] ) {
+					case 'mongodb':
+						$dsn = new MongoClient("mongodb://" . $this->profile['db_host'], array("username" => $this->profile['db_user'], "password" => $this->profile['db_pass']));
+						$this->dbh = $dsn->selectDB($this->profile['db_name']);
 					case 'sqlite':
 						$dsn = sprintf('sqlite:%s', $this->profile['db_file']);
 						$this->dbh = new PDO($dsn);

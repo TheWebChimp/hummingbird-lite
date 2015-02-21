@@ -16,7 +16,7 @@
 			# Global settings
 			'site_url' => 'http://localhost/hummingbird-lite/',
 			# Database settings
-			'db_driver' => 'sqlite', # none, sqlite or mysql
+			'db_driver' => 'sqlite', # none, sqlite or mysql, even mongodb :)
 			'db_host' => 'localhost',
 			'db_user' => 'root',
 			'db_pass' => '',
