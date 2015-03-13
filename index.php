@@ -1,8 +1,9 @@
 <?php
 	/**
-	 * Hummingbird Lite
+	 * Hummingbird Lite (WebChimp Flavor)
 	 * Version: 	2.0
 	 * Author(s):	biohzrdmx <github.com/biohzrdmx>
+	 *				webchimp <github.com/webchimp>
 	 */
 
 	# Define the absolute path

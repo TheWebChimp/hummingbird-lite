@@ -10,7 +10,7 @@
 
 	# Structure
 	$site->registerStyle('reset', $site->baseUrl('/css/reset.css') );
-	$site->registerStyle('structure', $site->baseUrl('/css/structure.css') );
+	$site->registerStyle('boilerplate', $site->baseUrl('/css/boilerplate.css') );
 	$site->registerStyle('sticky-footer', $site->baseUrl('/css/sticky-footer.css') );
 	$site->registerStyle('mobile', $site->baseUrl('/css/mobile.css') );
 
@@ -21,7 +21,7 @@
 
 		# Structure
 		'reset',
-		'structure',
+		'boilerplate',
 		'sticky-footer',
 		'mobile',
 
